@@ -27,6 +27,8 @@ public class Viewer extends JFrame {
 	private JPanel contentPane;
 	private Color green = new Color(0,189,154);
 	private Color grey = new Color(222,222,222);
+	private Color darkGrey = new Color(112,112,112);
+
 
 	private JPasswordField pwdPassword;
 	private JTextField textField;
@@ -102,6 +104,14 @@ public class Viewer extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pwdPassword.selectAll();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				pwdPassword.setForeground(green);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				pwdPassword.setForeground(darkGrey);
 			}
 		});
 		pwdPassword.setBounds(345, 360, 310, 40);
