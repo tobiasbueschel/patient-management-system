@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -39,6 +40,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.toedter.calendar.JDateChooser;
+
 
 public class Profile extends JFrame {
 
@@ -49,7 +52,6 @@ public class Profile extends JFrame {
 	private Color white = new Color(255,255,255);
 	private JTextField tfFirstName;
 	private JTextField tfLastName;
-	private JTextField tfDob;
 	private JTextField tfStreet;
 	private JTextField tfPostCode;
 	private JTextField tfCity;
@@ -149,7 +151,7 @@ public class Profile extends JFrame {
 		
 		// fullname
 		JLabel FullName = new JLabel();
-		FullName.setBounds(264, 31, 70, 30);
+		FullName.setBounds(260, 31, 340, 30);
 		mainPanel.add(FullName);
 		
 		// firstname
@@ -176,14 +178,9 @@ public class Profile extends JFrame {
 		JLabel lblDoB = new JLabel("DOB:");
 		lblDoB.setBounds(30, 290, 75, 30);
 		mainPanel.add(lblDoB);
-	
-		tfDob = new JTextField();
-		tfDob.setBounds(100, 290, 140, 30);
-		mainPanel.add(tfDob);
-		tfDob.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age:");
-		lblAge.setBounds(440, 31, 70, 30);
+		lblAge.setBounds(622, 31, 70, 30);
 		mainPanel.add(lblAge);
 		
 		JLabel lblAgeCalculated = new JLabel();
@@ -255,6 +252,8 @@ public class Profile extends JFrame {
 		lblMedicalCondition.setFont(new Font(lblMedicalCondition.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblMedicalCondition);
 		
+
+		
 		tfPhoneNumber = new JTextField();
 		tfPhoneNumber.setColumns(10);
 		tfPhoneNumber.setBounds(100, 410, 140, 30);
@@ -279,10 +278,28 @@ public class Profile extends JFrame {
 		list.setBounds(622, 145, 340, 320);
 		mainPanel.add(list);
 		
+		// source: http://toedter.com/jcalendar/
+		JDateChooser dateDOB = new JDateChooser();
+		dateDOB.setBounds(100, 290, 140, 28);
+		dateDOB.setBackground(grey);
+		dateDOB.setBorder(BorderFactory.createEmptyBorder());
+		mainPanel.add(dateDOB);
+		
+		
+		JDateChooser dateAppointment = new JDateChooser();
+		dateAppointment.setBounds(385, 68, 220, 28);
+		dateAppointment.setBackground(grey);
+		dateAppointment.setBorder(BorderFactory.createEmptyBorder());
+		
+		if (dateAppointment.getDate() == null){
+			dateAppointment.setMinSelectableDate(new Date()); // source: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
+		}
+
+		mainPanel.add(dateAppointment);
 		
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(336, 69, 146, 27);
+		comboBox.setBounds(692, 69, 270, 27);
 		mainPanel.add(comboBox);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -319,11 +336,13 @@ public class Profile extends JFrame {
 		
 		
 		JLabel lblInsuranceCompany = new JLabel("Insurance:");
-		lblInsuranceCompany.setBounds(260, 73, 85, 16);
+		lblInsuranceCompany.setBounds(622, 73, 80, 16);
+		lblInsuranceCompany.setFont(new Font(lblInsuranceCompany.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblInsuranceCompany);
 		
 		JLabel lblNextAppointment = new JLabel("Next Appointment:");
-		lblNextAppointment.setBounds(494, 73, 130, 16);
+		lblNextAppointment.setBounds(260, 73, 130, 16);
+		lblNextAppointment.setFont(new Font(lblNextAppointment.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblNextAppointment);
 		
 		
@@ -397,6 +416,7 @@ public class Profile extends JFrame {
 		label.setBounds(239, 20, 741, 83);
 		mainPanel.add(label);
 		
+
 
 
 		
