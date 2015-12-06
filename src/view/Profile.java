@@ -171,7 +171,7 @@ public class Profile extends JFrame {
 		tfDob.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age:");
-		lblAge.setBounds(387, 31, 70, 30);
+		lblAge.setBounds(440, 31, 70, 30);
 		mainPanel.add(lblAge);
 		
 		JLabel lblAgeCalculated = new JLabel();
@@ -253,6 +253,26 @@ public class Profile extends JFrame {
 		textField.setBounds(255, 230, 350, 270);
 		mainPanel.add(textField);
 		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(336, 69, 146, 27);
+		mainPanel.add(comboBox);
+		
+		JLabel lblMedicalImages = new JLabel("Medical Images:");
+		lblMedicalImages.setBounds(631, 122, 121, 30);
+		lblMedicalImages.setFont(new Font(lblMedicalImages.getFont().toString(), Font.BOLD, 12));
+		mainPanel.add(lblMedicalImages);
+		
+		
+		
+		JLabel lblInsuranceCompany = new JLabel("Insurance:");
+		lblInsuranceCompany.setBounds(260, 73, 85, 16);
+		mainPanel.add(lblInsuranceCompany);
+		
+		JLabel lblNextAppointment = new JLabel("Next Appointment:");
+		lblNextAppointment.setBounds(494, 73, 130, 16);
+		mainPanel.add(lblNextAppointment);
+		
+		
 		
 		JButton btnSearchGoogle = new JButton("Search Google");
 		btnSearchGoogle.setBounds(253, 177, 177, 29);
@@ -296,6 +316,9 @@ public class Profile extends JFrame {
 		label_2.setBounds(620, 114, 360, 396);
 		mainPanel.add(label_2);
 		
+
+
+
 
 
 
