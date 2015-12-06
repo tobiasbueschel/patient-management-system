@@ -152,7 +152,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblFirstname);
 	
 		tfFirstName = new JTextField();
-		tfFirstName.setBounds(100, 230, 130, 30);
+		tfFirstName.setBounds(100, 230, 140, 30);
 		mainPanel.add(tfFirstName);
 		tfFirstName.setColumns(10);
 		
@@ -162,7 +162,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblLastName);
 	
 		tfLastName = new JTextField();
-		tfLastName.setBounds(100, 260, 130, 30);
+		tfLastName.setBounds(100, 260, 140, 30);
 		mainPanel.add(tfLastName);
 		tfLastName.setColumns(10);
 		
@@ -172,7 +172,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblDoB);
 	
 		tfDob = new JTextField();
-		tfDob.setBounds(100, 290, 130, 30);
+		tfDob.setBounds(100, 290, 140, 30);
 		mainPanel.add(tfDob);
 		tfDob.setColumns(10);
 		
@@ -192,7 +192,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblStreet);
 	
 		tfStreet = new JTextField();
-		tfStreet.setBounds(100, 320, 130, 30);
+		tfStreet.setBounds(100, 320, 140, 30);
 		mainPanel.add(tfStreet);
 		tfStreet.setColumns(10);
 		
@@ -202,7 +202,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblPostCode);
 	
 		tfPostCode = new JTextField();
-		tfPostCode.setBounds(100, 350, 130, 30);
+		tfPostCode.setBounds(100, 350, 140, 30);
 		mainPanel.add(tfPostCode);
 		tfPostCode.setColumns(10);
 		
@@ -212,7 +212,7 @@ public class Profile extends JFrame {
 		mainPanel.add(lblCity);
 	
 		tfCity = new JTextField();
-		tfCity.setBounds(100, 380, 130, 30);
+		tfCity.setBounds(100, 380, 140, 30);
 		mainPanel.add(tfCity);
 		tfCity.setColumns(10);
 		
@@ -231,12 +231,12 @@ public class Profile extends JFrame {
 		
 		tfGender = new JTextField();
 		tfGender.setColumns(10);
-		tfGender.setBounds(100, 470, 130, 30);
+		tfGender.setBounds(100, 470, 140, 30);
 		mainPanel.add(tfGender);
 		
 		tfEmergency = new JTextField();
 		tfEmergency.setColumns(10);
-		tfEmergency.setBounds(100, 440, 130, 30);
+		tfEmergency.setBounds(100, 440, 140, 30);
 		mainPanel.add(tfEmergency);
 		
 		tfMedicalCondition = new JTextField();
@@ -251,7 +251,7 @@ public class Profile extends JFrame {
 		
 		tfPhoneNumber = new JTextField();
 		tfPhoneNumber.setColumns(10);
-		tfPhoneNumber.setBounds(100, 410, 130, 30);
+		tfPhoneNumber.setBounds(100, 410, 140, 30);
 		mainPanel.add(tfPhoneNumber);
 		
 		textField = new JTextField();
@@ -260,7 +260,7 @@ public class Profile extends JFrame {
 		mainPanel.add(textField);
 		
 		table = new JTable();
-		table.setBounds(630, 145, 340, 320);
+		table.setBounds(622, 145, 340, 320);
 		mainPanel.add(table);
 		
 		
@@ -269,16 +269,16 @@ public class Profile extends JFrame {
 		mainPanel.add(comboBox);
 		
 		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(800, 472, 177, 29);
+		btnDelete.setBounds(792, 472, 177, 29);
 		mainPanel.add(btnDelete);
 		
 		JButton btnUpload = new JButton("Upload");
-		btnUpload.setBounds(623, 472, 177, 29);
+		btnUpload.setBounds(615, 472, 177, 29);
 		mainPanel.add(btnUpload);
 		
 		
 		JLabel lblMedicalImages = new JLabel("Medical Images:");
-		lblMedicalImages.setBounds(630, 115, 121, 30);
+		lblMedicalImages.setBounds(622, 115, 121, 30);
 		lblMedicalImages.setFont(new Font(lblMedicalImages.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblMedicalImages);
 		
@@ -301,7 +301,7 @@ public class Profile extends JFrame {
 				if(Desktop.isDesktopSupported())
 				{
 				  try {
-					Desktop.getDesktop().browse(new URI("http://www.example.com"));
+					Desktop.getDesktop().browse(new URI("http://www.google.com/search?q=" + btnSearchGoogle.getText().replaceAll(" ", "+")));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -316,6 +316,24 @@ public class Profile extends JFrame {
 		mainPanel.add(btnSearchGoogle);
 		
 		JButton btnSearchWikipedia = new JButton("Search Wikipedia");
+		btnSearchWikipedia.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(Desktop.isDesktopSupported())
+				{
+				  try {
+					Desktop.getDesktop().browse(new URI("https://en.wikipedia.org/w/index.php?search=" + btnSearchWikipedia.getText().replaceAll(" ", "+")));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				}
+			}
+			
+		});
 		btnSearchWikipedia.setBounds(430, 177, 177, 29);
 		mainPanel.add(btnSearchWikipedia);
 
@@ -332,20 +350,16 @@ public class Profile extends JFrame {
 		JLabel lblPatientInfoBG = new JLabel("");
 		lblPatientInfoBG.setOpaque(true);
 		lblPatientInfoBG.setBackground(grey);
-		lblPatientInfoBG.setBounds(20, 220, 220, 290);
+		lblPatientInfoBG.setBounds(20, 111, 960, 399);
 		mainPanel.add(lblPatientInfoBG);
 		
 		JLabel label = new JLabel("");
 		label.setOpaque(true);
 		label.setBackground(new Color(222, 222, 222));
-		label.setBounds(250, 20, 730, 83);
+		label.setBounds(239, 20, 741, 83);
 		mainPanel.add(label);
 		
-		JLabel label_1 = new JLabel("");
-		label_1.setOpaque(true);
-		label_1.setBackground(new Color(222, 222, 222));
-		label_1.setBounds(250, 114, 730, 396);
-		mainPanel.add(label_1);
+
 		
 
 
