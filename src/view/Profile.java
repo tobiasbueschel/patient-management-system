@@ -2,10 +2,12 @@ package view;
 import java.awt.Color;
 import java.awt.Desktop;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,6 +23,7 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,6 +34,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JMenuBar;
 import javax.swing.JTable;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class Profile extends JFrame {
@@ -51,7 +58,6 @@ public class Profile extends JFrame {
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
-	private JTable table;
 	
 
 	
@@ -259,9 +265,20 @@ public class Profile extends JFrame {
 		textField.setBounds(255, 230, 350, 270);
 		mainPanel.add(textField);
 		
-		table = new JTable();
-		table.setBounds(622, 145, 340, 320);
-		mainPanel.add(table);
+		JList list = new JList();
+		list.setToolTipText("");
+		list.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		list.setBounds(622, 145, 340, 320);
+		mainPanel.add(list);
+		
 		
 		
 		JComboBox comboBox = new JComboBox();
@@ -273,6 +290,23 @@ public class Profile extends JFrame {
 		mainPanel.add(btnDelete);
 		
 		JButton btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); // source: http://stackoverflow.com/questions/13517770/jfilechooser-filters
+				JFileChooser fc = new JFileChooser();
+				
+				fc.addChoosableFileFilter(imageFilter);
+				fc.setAcceptAllFileFilterUsed(false);
+				
+				int status = fc.showOpenDialog(null);
+				if (status == JFileChooser.APPROVE_OPTION){
+					File imgFile = fc.getSelectedFile();
+					System.out.println(imgFile.getPath());
+				}
+				
+			}
+		});
 		btnUpload.setBounds(615, 472, 177, 29);
 		mainPanel.add(btnUpload);
 		
@@ -295,13 +329,17 @@ public class Profile extends JFrame {
 		
 		
 		JButton btnSearchGoogle = new JButton("Search Google");
+		btnSearchGoogle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSearchGoogle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(Desktop.isDesktopSupported())
 				{
 				  try {
-					Desktop.getDesktop().browse(new URI("http://www.google.com/search?q=" + btnSearchGoogle.getText().replaceAll(" ", "+")));
+					Desktop.getDesktop().browse(new URI("http://www.google.com/search?q=" + tfMedicalCondition.getText().replaceAll(" ", "+")));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -322,7 +360,7 @@ public class Profile extends JFrame {
 				if(Desktop.isDesktopSupported())
 				{
 				  try {
-					Desktop.getDesktop().browse(new URI("https://en.wikipedia.org/w/index.php?search=" + btnSearchWikipedia.getText().replaceAll(" ", "+")));
+					Desktop.getDesktop().browse(new URI("https://en.wikipedia.org/w/index.php?search=" + tfMedicalCondition.getText().replaceAll(" ", "+")));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -359,6 +397,7 @@ public class Profile extends JFrame {
 		label.setBounds(239, 20, 741, 83);
 		mainPanel.add(label);
 		
+
 
 		
 
