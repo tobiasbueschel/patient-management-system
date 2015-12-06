@@ -1,5 +1,6 @@
 package view;
 import java.awt.Color;
+import java.awt.Desktop;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,12 +21,16 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JMenuBar;
+import javax.swing.JTable;
 
 
 public class Profile extends JFrame {
@@ -46,6 +51,7 @@ public class Profile extends JFrame {
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
+	private JTable table;
 	
 
 	
@@ -253,12 +259,26 @@ public class Profile extends JFrame {
 		textField.setBounds(255, 230, 350, 270);
 		mainPanel.add(textField);
 		
+		table = new JTable();
+		table.setBounds(630, 145, 340, 320);
+		mainPanel.add(table);
+		
+		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(336, 69, 146, 27);
 		mainPanel.add(comboBox);
 		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBounds(800, 472, 177, 29);
+		mainPanel.add(btnDelete);
+		
+		JButton btnUpload = new JButton("Upload");
+		btnUpload.setBounds(623, 472, 177, 29);
+		mainPanel.add(btnUpload);
+		
+		
 		JLabel lblMedicalImages = new JLabel("Medical Images:");
-		lblMedicalImages.setBounds(631, 122, 121, 30);
+		lblMedicalImages.setBounds(630, 115, 121, 30);
 		lblMedicalImages.setFont(new Font(lblMedicalImages.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblMedicalImages);
 		
@@ -275,6 +295,23 @@ public class Profile extends JFrame {
 		
 		
 		JButton btnSearchGoogle = new JButton("Search Google");
+		btnSearchGoogle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(Desktop.isDesktopSupported())
+				{
+				  try {
+					Desktop.getDesktop().browse(new URI("http://www.example.com"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				}
+			}
+		});
 		btnSearchGoogle.setBounds(253, 177, 177, 29);
 		mainPanel.add(btnSearchGoogle);
 		
@@ -307,15 +344,11 @@ public class Profile extends JFrame {
 		JLabel label_1 = new JLabel("");
 		label_1.setOpaque(true);
 		label_1.setBackground(new Color(222, 222, 222));
-		label_1.setBounds(250, 114, 360, 396);
+		label_1.setBounds(250, 114, 730, 396);
 		mainPanel.add(label_1);
 		
-		JLabel label_2 = new JLabel("");
-		label_2.setOpaque(true);
-		label_2.setBackground(new Color(222, 222, 222));
-		label_2.setBounds(620, 114, 360, 396);
-		mainPanel.add(label_2);
-		
+
+
 
 
 
