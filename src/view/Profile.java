@@ -42,9 +42,10 @@ public class Profile extends JFrame {
 	private JTextField tfPostCode;
 	private JTextField tfCity;
 	private JTextField tfPhoneNumber;
-	private JTextField tfBilling;
+	private JTextField tfGender;
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
+	private JTextField textField;
 	
 
 	
@@ -128,7 +129,7 @@ public class Profile extends JFrame {
 		mainPanel.setLayout(null);
 		
 		JLabel lblPatientPhoto = new JLabel("Patient Photo");
-		lblPatientPhoto.setBounds(20, 20, 180, 180);
+		lblPatientPhoto.setBounds(20, 20, 220, 200);
 		lblPatientPhoto.setBackground(green);
 		lblPatientPhoto.setOpaque(true);
 		mainPanel.add(lblPatientPhoto);
@@ -136,123 +137,167 @@ public class Profile extends JFrame {
 		
 		// fullname
 		JLabel FullName = new JLabel();
-		FullName.setBounds(234, 25, 70, 30);
+		FullName.setBounds(264, 31, 70, 30);
 		mainPanel.add(FullName);
 		
 		// firstname
 		JLabel lblFirstname = new JLabel("Firstname:");
-		lblFirstname.setBounds(30, 210, 75, 30);
+		lblFirstname.setBounds(30, 230, 75, 30);
 		mainPanel.add(lblFirstname);
 	
 		tfFirstName = new JTextField();
-		tfFirstName.setBounds(100, 210, 130, 30);
+		tfFirstName.setBounds(100, 230, 130, 30);
 		mainPanel.add(tfFirstName);
 		tfFirstName.setColumns(10);
 		
 		// lastname
 		JLabel lblLastName = new JLabel("Lastname:");
-		lblLastName.setBounds(30, 240, 75, 30);
+		lblLastName.setBounds(30, 260, 75, 30);
 		mainPanel.add(lblLastName);
 	
 		tfLastName = new JTextField();
-		tfLastName.setBounds(100, 240, 130, 30);
+		tfLastName.setBounds(100, 260, 130, 30);
 		mainPanel.add(tfLastName);
 		tfLastName.setColumns(10);
 		
 		// DOB
 		JLabel lblDoB = new JLabel("DOB:");
-		lblDoB.setBounds(30, 270, 75, 30);
+		lblDoB.setBounds(30, 290, 75, 30);
 		mainPanel.add(lblDoB);
 	
 		tfDob = new JTextField();
-		tfDob.setBounds(100, 270, 130, 30);
+		tfDob.setBounds(100, 290, 130, 30);
 		mainPanel.add(tfDob);
 		tfDob.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age:");
-		lblAge.setBounds(234, 163, 70, 30);
+		lblAge.setBounds(387, 31, 70, 30);
 		mainPanel.add(lblAge);
 		
 		JLabel lblAgeCalculated = new JLabel();
-		lblAgeCalculated.setBounds(304, 157, 70, 30);
+		lblAgeCalculated.setBounds(253, 262, 70, 30);
 		mainPanel.add(lblAgeCalculated);
 		
 		
 		
 		// Street
 		JLabel lblStreet = new JLabel("Street:");
-		lblStreet.setBounds(30, 300, 70, 30);
+		lblStreet.setBounds(30, 320, 70, 30);
 		mainPanel.add(lblStreet);
 	
 		tfStreet = new JTextField();
-		tfStreet.setBounds(100, 300, 130, 30);
+		tfStreet.setBounds(100, 320, 130, 30);
 		mainPanel.add(tfStreet);
 		tfStreet.setColumns(10);
 		
 		// PostCode
 		JLabel lblPostCode = new JLabel("Postcode:");
-		lblPostCode.setBounds(30, 330, 70, 30);
+		lblPostCode.setBounds(30, 350, 70, 30);
 		mainPanel.add(lblPostCode);
 	
 		tfPostCode = new JTextField();
-		tfPostCode.setBounds(100, 330, 130, 30);
+		tfPostCode.setBounds(100, 350, 130, 30);
 		mainPanel.add(tfPostCode);
 		tfPostCode.setColumns(10);
 		
 		// City
 		JLabel lblCity = new JLabel("City:");
-		lblCity.setBounds(30, 360, 70, 30);
+		lblCity.setBounds(30, 380, 70, 30);
 		mainPanel.add(lblCity);
 	
 		tfCity = new JTextField();
-		tfCity.setBounds(100, 360, 130, 30);
+		tfCity.setBounds(100, 380, 130, 30);
 		mainPanel.add(tfCity);
 		tfCity.setColumns(10);
 		
 		
-		JLabel lblPhoneNumber = new JLabel("Phone:");
-		lblPhoneNumber.setBounds(30, 390, 75, 30);
-		mainPanel.add(lblPhoneNumber);
+		JLabel lblPhone = new JLabel("Phone:");
+		lblPhone.setBounds(30, 410, 75, 30);
+		mainPanel.add(lblPhone);
 		
-		JLabel lblEmergencyPhone = new JLabel("Emergency:");
-		lblEmergencyPhone.setBounds(30, 420, 75, 30);
-		mainPanel.add(lblEmergencyPhone);
+		JLabel lblEmergency = new JLabel("Emergency:");
+		lblEmergency.setBounds(30, 440, 75, 30);
+		mainPanel.add(lblEmergency);
 		
-		JLabel lblBillingStatus = new JLabel("Billing:");
-		lblBillingStatus.setBounds(30, 450, 75, 30);
-		mainPanel.add(lblBillingStatus);
+		JLabel lblGender = new JLabel("Gender:");
+		lblGender.setBounds(30, 470, 75, 30);
+		mainPanel.add(lblGender);
 		
-		tfBilling = new JTextField();
-		tfBilling.setColumns(10);
-		tfBilling.setBounds(100, 450, 130, 30);
-		mainPanel.add(tfBilling);
+		tfGender = new JTextField();
+		tfGender.setColumns(10);
+		tfGender.setBounds(100, 470, 130, 30);
+		mainPanel.add(tfGender);
 		
 		tfEmergency = new JTextField();
 		tfEmergency.setColumns(10);
-		tfEmergency.setBounds(100, 420, 130, 30);
+		tfEmergency.setBounds(100, 440, 130, 30);
 		mainPanel.add(tfEmergency);
 		
 		tfMedicalCondition = new JTextField();
 		tfMedicalCondition.setColumns(10);
-		tfMedicalCondition.setBounds(589, 163, 341, 30);
+		tfMedicalCondition.setBounds(255, 140, 350, 30);
 		mainPanel.add(tfMedicalCondition);
 		
 		JLabel lblMedicalCondition = new JLabel("Medical Condition:");
-		lblMedicalCondition.setBounds(454, 163, 121, 30);
+		lblMedicalCondition.setBounds(260, 115, 121, 30);
 		lblMedicalCondition.setFont(new Font(lblMedicalCondition.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblMedicalCondition);
 		
 		tfPhoneNumber = new JTextField();
 		tfPhoneNumber.setColumns(10);
-		tfPhoneNumber.setBounds(100, 390, 130, 30);
+		tfPhoneNumber.setBounds(100, 410, 130, 30);
 		mainPanel.add(tfPhoneNumber);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(255, 230, 350, 270);
+		mainPanel.add(textField);
+		
+		
+		JButton btnSearchGoogle = new JButton("Search Google");
+		btnSearchGoogle.setBounds(253, 177, 177, 29);
+		mainPanel.add(btnSearchGoogle);
+		
+		JButton btnSearchWikipedia = new JButton("Search Wikipedia");
+		btnSearchWikipedia.setBounds(430, 177, 177, 29);
+		mainPanel.add(btnSearchWikipedia);
+
+		
+		JLabel lblComments = new JLabel("Comments:");
+		lblComments.setBounds(260, 205, 121, 30);
+		lblComments.setFont(new Font(lblComments.getFont().toString(), Font.BOLD, 12));
+		mainPanel.add(lblComments);
+		
+		
+		
 	
 		
 		JLabel lblPatientInfoBG = new JLabel("");
 		lblPatientInfoBG.setOpaque(true);
 		lblPatientInfoBG.setBackground(grey);
-		lblPatientInfoBG.setBounds(20, 199, 220, 310);
+		lblPatientInfoBG.setBounds(20, 220, 220, 290);
 		mainPanel.add(lblPatientInfoBG);
+		
+		JLabel label = new JLabel("");
+		label.setOpaque(true);
+		label.setBackground(new Color(222, 222, 222));
+		label.setBounds(250, 20, 730, 83);
+		mainPanel.add(label);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setOpaque(true);
+		label_1.setBackground(new Color(222, 222, 222));
+		label_1.setBounds(250, 114, 360, 396);
+		mainPanel.add(label_1);
+		
+		JLabel label_2 = new JLabel("");
+		label_2.setOpaque(true);
+		label_2.setBackground(new Color(222, 222, 222));
+		label_2.setBounds(620, 114, 360, 396);
+		mainPanel.add(label_2);
+		
+
+
 
 		
 		contentPane.setVisible(true);
