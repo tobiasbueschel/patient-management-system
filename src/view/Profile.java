@@ -150,69 +150,13 @@ public class Profile extends JFrame {
 		btnBack.setBounds(37, 0, 50, 50);
 		btnBack.setBorderPainted(false);
 		menuPanel.add(btnBack);
+		
+		
+
 
 		// MENU: button - save
 		JButton btnSave = new JButton();
-		btnSave.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				PreparedStatement pst = null;
-				
-				// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
-				try {
-					String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-					pst = connection.prepareStatement(query);
 		
-					pst.setString(1, tfFirstName.getText());
-					pst.setString(2, tfLastName.getText());
-					pst.setString(3, "as");
-					pst.setString(4, tfStreet.getText());
-					pst.setString(5, tfPostCode.getText());
-					pst.setString(6, tfCity.getText());
-					pst.setInt(7, Integer.valueOf(tfPhoneNumber.getText()));
-					pst.setInt(8, Integer.valueOf(tfEmergency.getText()));
-					pst.setString(9, "as");
-					pst.setString(10, tfMedicalCondition.getText());
-					pst.setString(11, "as");
-					pst.setString(12, tfComments.getText());
-					pst.setString(13, "as");
-					pst.setString(14, "as");
-					pst.setString(15, "as");
-
-					pst.execute();
-					JOptionPane.showMessageDialog(null, "Data Saved");
-					
-				}
-				catch (Exception e1) {
-					System.out.println(e1);
-					e1.printStackTrace();
-				}
-				finally{
-					  if(pst != null) {
-					    try {
-							pst.close();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					  }
-					}
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnSave.setIcon(new ImageIcon("images/save_inverted.png"));
-				btnSave.setOpaque(true);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnSave.setIcon(new ImageIcon("images/save.png"));
-				btnSave.setOpaque(false);
-			}
-		});
 		btnSave.setBackground(grey);
 		btnSave.setIcon(new ImageIcon("images/save.png"));
 		btnSave.setBounds(906, 0, 50, 50);
@@ -684,7 +628,94 @@ public class Profile extends JFrame {
 		cbBilling.addItem(new String("Paid"));
 		cbBilling.addItem(new String("Payment outstanding"));
 		mainPanel.add(cbBilling);
+			
 		
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				PreparedStatement pst = null;
+				PreparedStatement pst2 = null;
+
+				
+
+				// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
+				try {
+					String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					pst = connection.prepareStatement(query);
+					
+					
+					String query2 ="select count(patientID) from PatientInfo";
+					pst2 = connection.prepareStatement(query2);
+					ResultSet rs = pst2.executeQuery();
+					
+					int count = 0;
+
+					while (rs.next()) {
+					    ++count;
+					    // Get data from the current row and use it
+					}
+
+					if (count == 0) {
+					    System.out.println("No records found");
+					    count = 1;
+					}
+					
+					String iconStr = "images/profile.photos/profile" + count + ".png";
+					
+					rs.close();
+					pst2.close();
+		
+					pst.setString(1, tfFirstName.getText());
+					pst.setString(2, tfLastName.getText());
+					pst.setString(3, dateDOB.toString());
+					pst.setString(4, tfStreet.getText());
+					pst.setString(5, tfPostCode.getText());
+					pst.setString(6, tfCity.getText());
+					pst.setString(7, tfPhoneNumber.getText());
+					pst.setString(8, tfEmergency.getText());
+					pst.setString(9, cbGender.getSelectedItem().toString());
+					pst.setString(10, tfMedicalCondition.getText());
+					pst.setString(11, cbBilling.getSelectedItem().toString());
+					pst.setString(12, tfComments.getText());
+					pst.setString(13, cbInsurance.getSelectedItem().toString());
+					pst.setString(14, iconStr);
+					pst.setString(15, dateAppointment.toString());
+
+					pst.executeUpdate();
+					JOptionPane.showMessageDialog(null, "Data Saved");
+					
+				}
+				catch (Exception e1) {
+					System.out.println(e1);
+					e1.printStackTrace();
+				}
+				finally{
+					  if(pst != null) {
+					    try {
+							pst.close();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					  }
+					}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSave.setIcon(new ImageIcon("images/save_inverted.png"));
+				btnSave.setOpaque(true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSave.setIcon(new ImageIcon("images/save.png"));
+				btnSave.setOpaque(false);
+			}
+		});
+		
+
 		
 
 		contentPane.setVisible(true);

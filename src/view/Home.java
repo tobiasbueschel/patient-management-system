@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.RowFilter;
 import javax.swing.UIManager;
 
 import java.awt.event.MouseAdapter;
@@ -38,6 +39,12 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JMenuBar;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Home extends JFrame {
 
@@ -50,6 +57,8 @@ public class Home extends JFrame {
 	private JTable table;
 	private JPanel mainPanel;
 	Connection connection = null;
+	
+	TableRowSorter<TableModel> sorter;
 
 	/**
 	 * Create the frame.
@@ -61,6 +70,10 @@ public class Home extends JFrame {
 		contentPane.setBorder(null);
 		setResizable(false);
 		contentPane.setLayout(null);
+		
+		table = new JTable();
+		table.setBounds(37, 20, 926, 477);
+		mainPanel.add(table);
 		
 		// MENU: Panel
 		JPanel menuPanel = new JPanel();
@@ -89,6 +102,7 @@ public class Home extends JFrame {
 		
 		// MENU: search field
 		txtSearch = new JTextField();
+
 		txtSearch.setText("Search...");
 		txtSearch.setBounds(370, 12, 176, 28);
 		txtSearch.setColumns(10);
@@ -196,6 +210,10 @@ public class Home extends JFrame {
 				btnDelete.setIcon(new ImageIcon("images/delete.png"));
 				btnDelete.setOpaque(false);
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				((DefaultTableModel) table.getModel()).removeRow(table.getSelectedRow());				
+			}
 		});
 		btnDelete.setBackground(white);
 		btnDelete.setIcon(new ImageIcon("images/delete.png"));
@@ -240,12 +258,12 @@ public class Home extends JFrame {
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
-		table = new JTable();
-		table.setBounds(37, 20, 926, 477);
-		mainPanel.add(table);
+
 		
 		
 		connection = SQLiteConnector.dbConnector();
+		TableModel model = null;
+		
 		
 		// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
 		try {
@@ -255,9 +273,10 @@ public class Home extends JFrame {
 			ResultSet rs = pst.executeQuery();
 			
 			// from http://sourceforge.net/projects/finalangelsanddemons/ -> rs2xml.jar
-			table.setModel(DbUtils.resultSetToTableModel(rs));
+			model = (DbUtils.resultSetToTableModel(rs));
 			pst.close();
 			rs.close();
+		    sorter = new TableRowSorter<TableModel>(model);
 		}
 		catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, e1);
@@ -270,9 +289,18 @@ public class Home extends JFrame {
 				e1.printStackTrace();
 			}
 		}
-
 		
 
+
+		// source: https://www.youtube.com/watch?v=Uq4v-bIDAIk
+		txtSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String query = txtSearch.getText().toLowerCase();
+				table.setRowSorter(sorter);
+				sorter.setRowFilter(RowFilter.regexFilter(query));
+			}
+		});
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(37, 20, 926, 477);
