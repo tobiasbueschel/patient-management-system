@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
@@ -68,6 +69,8 @@ import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Component;
+
+import javax.swing.JTextArea;
 
 public class Profile extends JFrame {
 
@@ -113,9 +116,6 @@ public class Profile extends JFrame {
 		contentPane.setBorder(null);
 		setResizable(false);
 		contentPane.setLayout(null);
-
-		Connection connection = SQLiteConnector.dbConnector();
-
 		
 		// MENU: Panel
 		JPanel menuPanel = new JPanel();
@@ -348,8 +348,6 @@ public class Profile extends JFrame {
 		tfPhoneNumber.setBounds(107, 410, 135, 30);
 		mainPanel.add(tfPhoneNumber);
 
-		
-		
 		DefaultListModel listModel = new DefaultListModel();
 		
 		
@@ -364,7 +362,6 @@ public class Profile extends JFrame {
 		        }
 		    }
 		});
-
 
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -624,52 +621,51 @@ public class Profile extends JFrame {
 		cbBilling.addItem(new String("Payment outstanding"));
 		mainPanel.add(cbBilling);
 		
-		JScrollPane scrollPane_1 = new JScrollPane((Component) null);
-		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_1.setBounds(255, 230, 350, 270);
-		mainPanel.add(scrollPane_1);
+		JTextArea taComments = new JTextArea();
+		taComments.setBounds(255, 233, 350, 263);
+		taComments.setEditable(true);
+
+		JScrollPane sp = new JScrollPane(taComments);
+		sp.setBounds(255, 233, 350, 263);
+		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		mainPanel.add(sp);
 			
 		
 		btnSave.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("resource")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				Connection connection = SQLiteConnector.dbConnector();
+
 				PreparedStatement pst = null;
-				PreparedStatement pst2 = null;
+				int count = 0;
 
-				
-
-				// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
-				try {
+				// source: https://www.youtube.com/watch?v=6cNYUc2PIag
+				try {		
+					
+					
+					Statement stmt = connection.createStatement();
+					String query1 = "select count(*) from PatientInfo";
+					ResultSet rs = stmt.executeQuery(query1);
+					
+					while (rs.next()){
+						count++;
+					}
+					
+					rs.close();
+					stmt.close();
+					
+					System.out.println(count);		
+								
+					
 					String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					pst = connection.prepareStatement(query);
 					
-					
-					String query2 ="select count(patientID) from PatientInfo";
-					pst2 = connection.prepareStatement(query2);
-					ResultSet rs = pst2.executeQuery();
-					
-					int count = 0;
-
-					while (rs.next()) {
-					    ++count;
-					    // Get data from the current row and use it
-					}
-
-					if (count == 0) {
-					    System.out.println("No records found");
-					    count = 1;
-					}
-					
-					String iconStr = "images/profile.photos/profile" + count + ".png";
-					
-					rs.close();
-					pst2.close();
-		
 					pst.setString(1, tfFirstName.getText());
 					pst.setString(2, tfLastName.getText());
-					pst.setString(3, dateDOB.toString());
+					pst.setString(3, dateDOB.getDate().toString());
 					pst.setString(4, tfStreet.getText());
 					pst.setString(5, tfPostCode.getText());
 					pst.setString(6, tfCity.getText());
@@ -678,29 +674,30 @@ public class Profile extends JFrame {
 					pst.setString(9, cbGender.getSelectedItem().toString());
 					pst.setString(10, tfMedicalCondition.getText());
 					pst.setString(11, cbBilling.getSelectedItem().toString());
-					pst.setString(12, tfComments.getText());
+					pst.setString(12, taComments.getText());
 					pst.setString(13, cbInsurance.getSelectedItem().toString());
-					pst.setString(14, iconStr);
-					pst.setString(15, dateAppointment.toString());
+					pst.setString(14, "hello");
+					pst.setString(15, dateAppointment.getDate().toString());
 
-					pst.executeUpdate();
+					pst.execute();
 					JOptionPane.showMessageDialog(null, "Data Saved");
-					
+
+					pst.close();
 				}
-				catch (Exception e1) {
-					System.out.println(e1);
+				catch (SQLException e1) {
+					System.err.println("No connection with SQLite possible.");
 					e1.printStackTrace();
-				}
-				finally{
-					  if(pst != null) {
-					    try {
-							pst.close();
+				} finally {
+					if (connection != null) {
+						try {
+							connection.close();
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-					  }
 					}
+				}
+
 			}
 
 			@Override
