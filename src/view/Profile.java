@@ -64,7 +64,6 @@ public class Profile extends JFrame {
 	private JTextField tfPostCode;
 	private JTextField tfCity;
 	private JTextField tfPhoneNumber;
-	private JTextField tfGender;
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
@@ -265,11 +264,6 @@ public class Profile extends JFrame {
 		lblGender.setBounds(30, 470, 75, 30);
 		mainPanel.add(lblGender);
 
-		tfGender = new JTextField();
-		tfGender.setColumns(10);
-		tfGender.setBounds(100, 470, 140, 30);
-		mainPanel.add(tfGender);
-
 		tfEmergency = new JTextField();
 		tfEmergency.setColumns(10);
 		tfEmergency.setBounds(100, 440, 140, 30);
@@ -341,7 +335,7 @@ public class Profile extends JFrame {
 				lblAgeCalculated.setText(String.valueOf(age));
 			}
 		});
-		dateDOB.setBounds(100, 290, 140, 28);
+		dateDOB.setBounds(100, 290, 140, 30);
 		dateDOB.setBackground(grey);
 		dateDOB.setBorder(BorderFactory.createEmptyBorder());
 
@@ -482,12 +476,20 @@ public class Profile extends JFrame {
 		label.setBackground(white);
 		label.setBounds(260, 110, 700, 2);
 		mainPanel.add(label);
+		
+		JComboBox cbGender = new JComboBox();
+		cbGender.setBounds(99, 472, 143, 30);
+		cbGender.addItem(new String("Male"));
+		cbGender.addItem(new String("Female"));
+		mainPanel.add(cbGender);
 
 		JLabel lblPatientInfoBG = new JLabel("");
 		lblPatientInfoBG.setOpaque(true);
 		lblPatientInfoBG.setBackground(grey);
 		lblPatientInfoBG.setBounds(20, 20, 960, 490);
 		mainPanel.add(lblPatientInfoBG);
+		
+
 
 		contentPane.setVisible(true);
 		setContentPane(contentPane);
