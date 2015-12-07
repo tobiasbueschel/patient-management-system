@@ -52,6 +52,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.toedter.calendar.JDateChooser;
 
 import controller.CopyFile;
+import controller.ImgsNText;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -350,15 +351,17 @@ public class Profile extends JFrame {
 
 		
 		DefaultListModel listModel = new DefaultListModel();
-		listModel.addElement("Jane Doe");
-		listModel.addElement("John Smith");
-		listModel.addElement("Kathy Green");
 		
-		
-		JList list = new JList(listModel);
+		JList list = new JList();
+
+
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setBounds(622, 145, 340, 320);
+		
+		JList booklist = new JList("hello", "/images/profile.png");
+		booklist.setCellRenderer(new BookCellRenderer());
+		booklist.setVisibleRowCount(4);
 		
 		mainPanel.add(list);
 		
