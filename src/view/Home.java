@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 
@@ -57,8 +58,6 @@ public class Home extends JFrame {
 	private JTable table;
 	private JPanel mainPanel;
 	Connection connection = null;
-	
-	TableRowSorter<TableModel> sorter;
 
 	/**
 	 * Create the frame.
@@ -70,10 +69,6 @@ public class Home extends JFrame {
 		contentPane.setBorder(null);
 		setResizable(false);
 		contentPane.setLayout(null);
-		
-		table = new JTable();
-		table.setBounds(37, 20, 926, 477);
-		mainPanel.add(table);
 		
 		// MENU: Panel
 		JPanel menuPanel = new JPanel();
@@ -212,7 +207,7 @@ public class Home extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				((DefaultTableModel) table.getModel()).removeRow(table.getSelectedRow());				
+				table.remove(table.getSelectedRow());
 			}
 		});
 		btnDelete.setBackground(white);
@@ -258,12 +253,13 @@ public class Home extends JFrame {
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
-
+		table = new JTable();
+		table.setBounds(37, 20, 926, 477);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		mainPanel.add(table);
 		
 		
 		connection = SQLiteConnector.dbConnector();
-		TableModel model = null;
-		
 		
 		// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
 		try {
@@ -273,10 +269,9 @@ public class Home extends JFrame {
 			ResultSet rs = pst.executeQuery();
 			
 			// from http://sourceforge.net/projects/finalangelsanddemons/ -> rs2xml.jar
-			model = (DbUtils.resultSetToTableModel(rs));
+			table.setModel(DbUtils.resultSetToTableModel(rs));
 			pst.close();
 			rs.close();
-		    sorter = new TableRowSorter<TableModel>(model);
 		}
 		catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, e1);
@@ -289,14 +284,13 @@ public class Home extends JFrame {
 				e1.printStackTrace();
 			}
 		}
-		
 
-
-		// source: https://www.youtube.com/watch?v=Uq4v-bIDAIk
+		// source: 
 		txtSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String query = txtSearch.getText().toLowerCase();
+				TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel)table.getModel());
 				table.setRowSorter(sorter);
 				sorter.setRowFilter(RowFilter.regexFilter(query));
 			}

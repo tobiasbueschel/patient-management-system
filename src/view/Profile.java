@@ -67,6 +67,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Component;
 
 public class Profile extends JFrame {
 
@@ -83,7 +84,6 @@ public class Profile extends JFrame {
 	private JTextField tfPhoneNumber;
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
-	private JTextField tfComments;
 	private JLabel lblFullName;
 	private JLabel lblPatientPhoto;
 	private JDateChooser dateDOB;
@@ -347,11 +347,6 @@ public class Profile extends JFrame {
 		tfPhoneNumber.setColumns(10);
 		tfPhoneNumber.setBounds(107, 410, 135, 30);
 		mainPanel.add(tfPhoneNumber);
-
-		tfComments = new JTextField();
-		tfComments.setColumns(10);
-		tfComments.setBounds(255, 230, 350, 270);
-		mainPanel.add(tfComments);
 
 		
 		
@@ -628,6 +623,12 @@ public class Profile extends JFrame {
 		cbBilling.addItem(new String("Paid"));
 		cbBilling.addItem(new String("Payment outstanding"));
 		mainPanel.add(cbBilling);
+		
+		JScrollPane scrollPane_1 = new JScrollPane((Component) null);
+		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_1.setBounds(255, 230, 350, 270);
+		mainPanel.add(scrollPane_1);
 			
 		
 		btnSave.addMouseListener(new MouseAdapter() {
