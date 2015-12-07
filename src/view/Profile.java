@@ -69,6 +69,15 @@ public class Profile extends JFrame {
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
 	private JLabel lblFullName;
+	private String[] insurances = { "A La Carte Healthcare",
+			"ACE European Group Limited", "AIG Direct",
+			"Allianz Worldwide Care Limited", "Amariz Health Insurance",
+			"ANT Insurance", "ASDA Finance Services", "AXA Insurance", "AXA PPP Health Insurance",
+			"AXA Sunlife", "B and CE Insurance", "Barclays Insurance", "BCWA Healthcare",
+			"Benenden Healthcare Society Limited", "BHSF Health Insurance", "Bolton and District Hospital Saturday",
+			"Boots Insurance", "Bright Grey", "British Friendly Society Limited", "British Insurance Limited", "Bupa", "Capital Healthcare",
+			"Castle Cover", "CI Healthcare", "CIGNA", "Cirencester Friendly Society Limited", "CIS Health Insurance", "Combined Insurance", "Countrywide",
+			"CS Healthcare", "Dencover Insurance", "Denplan Insurance", "Dentists and General Insurance", "Direct Line Life"};
 
 	/**
 	 * Create the frame.
@@ -145,13 +154,13 @@ public class Profile extends JFrame {
 
 		// ===============================================================================================
 		// Main Panel
-		
+
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 50, 1000, 528);
 		mainPanel.setBackground(white);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
-		
+
 		JLabel lblPatientPhoto = new JLabel("Patient Photo");
 		lblPatientPhoto.setBounds(20, 20, 220, 200);
 		lblPatientPhoto.setBackground(green);
@@ -160,7 +169,7 @@ public class Profile extends JFrame {
 
 		StringBuilder sb = new StringBuilder();
 		lblFullName = new JLabel();
-		
+
 		// firstname
 		JLabel lblFirstname = new JLabel("Firstname:");
 		lblFirstname.setBounds(30, 230, 75, 30);
@@ -169,7 +178,8 @@ public class Profile extends JFrame {
 		tfFirstName = new JTextField();
 		tfFirstName.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
-				lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+				lblFullName.setText(tfFirstName.getText() + " "
+						+ tfLastName.getText());
 			}
 		});
 		tfFirstName.setBounds(100, 230, 140, 30);
@@ -185,15 +195,17 @@ public class Profile extends JFrame {
 		tfLastName.setBounds(100, 260, 140, 30);
 		tfLastName.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
-				lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+				lblFullName.setText(tfFirstName.getText() + " "
+						+ tfLastName.getText());
 			}
 		});
 		mainPanel.add(tfLastName);
 		tfLastName.setColumns(10);
-		
+
 		// fullname
 		lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
-		lblFullName.setFont(new Font(lblFullName.getFont().toString(), Font.BOLD, 18));
+		lblFullName.setFont(new Font(lblFullName.getFont().toString(),
+				Font.BOLD, 24));
 		lblFullName.setBounds(260, 31, 340, 30);
 		mainPanel.add(lblFullName);
 
@@ -310,32 +322,33 @@ public class Profile extends JFrame {
 		dateDOB.addPropertyChangeListener("date", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-					
-					// TODO: implement algorithm that deletes age when dateDOB == null
-					Calendar dob = Calendar.getInstance();
-					dob.setTime((Date) e.getNewValue());
 
-					Calendar today = Calendar.getInstance();
-					int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+				// TODO: implement algorithm that deletes age when dateDOB ==
+				// null
+				Calendar dob = Calendar.getInstance();
+				dob.setTime((Date) e.getNewValue());
 
-					if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)
-							|| (today.get(Calendar.MONTH) == dob
-									.get(Calendar.MONTH) && today
-									.get(Calendar.DAY_OF_MONTH) < dob
-									.get(Calendar.DAY_OF_MONTH))) {
-						age--;
-					}
-					lblAgeCalculated.setText(String.valueOf(age));
+				Calendar today = Calendar.getInstance();
+				int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+				if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)
+						|| (today.get(Calendar.MONTH) == dob
+								.get(Calendar.MONTH) && today
+								.get(Calendar.DAY_OF_MONTH) < dob
+								.get(Calendar.DAY_OF_MONTH))) {
+					age--;
+				}
+				lblAgeCalculated.setText(String.valueOf(age));
 			}
 		});
 		dateDOB.setBounds(100, 290, 140, 28);
 		dateDOB.setBackground(grey);
 		dateDOB.setBorder(BorderFactory.createEmptyBorder());
-		
+
 		if (dateDOB.getDate() == null) {
-			dateDOB.setMaxSelectableDate(new Date()); 
+			dateDOB.setMaxSelectableDate(new Date());
 		}
-		
+
 		mainPanel.add(dateDOB);
 
 		JDateChooser dateAppointment = new JDateChooser();
@@ -344,15 +357,21 @@ public class Profile extends JFrame {
 		dateAppointment.setBorder(BorderFactory.createEmptyBorder());
 		dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
-		// source: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
+		// source:
+		// http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
 		if (dateAppointment.getDate() == null) {
-			dateAppointment.setMinSelectableDate(new Date()); 
+			dateAppointment.setMinSelectableDate(new Date());
 		}
 
 		mainPanel.add(dateAppointment);
 
 		JComboBox cbInsurance = new JComboBox();
 		cbInsurance.setBounds(692, 69, 270, 27);
+
+		for (int count = 0; count < insurances.length; count++) {
+			cbInsurance.addItem(insurances[count]);
+		}
+
 		mainPanel.add(cbInsurance);
 
 		JButton btnDelete = new JButton("Delete");
@@ -390,7 +409,8 @@ public class Profile extends JFrame {
 
 		JLabel lblInsuranceCompany = new JLabel("Insurance:");
 		lblInsuranceCompany.setBounds(622, 73, 80, 16);
-		lblInsuranceCompany.setFont(new Font(lblInsuranceCompany.getFont().toString(), Font.BOLD, 12));
+		lblInsuranceCompany.setFont(new Font(lblInsuranceCompany.getFont()
+				.toString(), Font.BOLD, 12));
 		mainPanel.add(lblInsuranceCompany);
 
 		JLabel lblNextAppointment = new JLabel("Next Appointment:");
@@ -456,7 +476,7 @@ public class Profile extends JFrame {
 		lblComments.setFont(new Font(lblComments.getFont().toString(),
 				Font.BOLD, 12));
 		mainPanel.add(lblComments);
-		
+
 		JLabel label = new JLabel();
 		label.setOpaque(true);
 		label.setBackground(white);
@@ -468,8 +488,6 @@ public class Profile extends JFrame {
 		lblPatientInfoBG.setBackground(grey);
 		lblPatientInfoBG.setBounds(20, 20, 960, 490);
 		mainPanel.add(lblPatientInfoBG);
-
-
 
 		contentPane.setVisible(true);
 		setContentPane(contentPane);
