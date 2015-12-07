@@ -36,6 +36,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
@@ -94,9 +95,10 @@ public class Profile extends JFrame {
 	private JComboBox<String> cbGender;
 	private JComboBox<String> cbBilling;
 	private JComboBox<String> cbInsurance;
+	private Connection connection = null;
 
-	
-	private String[] insurances = { "A La Carte Healthcare",
+
+	private String[] insurances = { "none", "A La Carte Healthcare",
 			"ACE European Group Limited", "AIG Direct",
 			"Allianz Worldwide Care Limited", "Amariz Health Insurance",
 			"ANT Insurance", "ASDA Finance Services", "AXA Insurance", "AXA PPP Health Insurance",
@@ -116,7 +118,7 @@ public class Profile extends JFrame {
 		contentPane.setBorder(null);
 		setResizable(false);
 		contentPane.setLayout(null);
-		
+
 		// MENU: Panel
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBounds(0, 0, 1000, 50);
@@ -150,14 +152,14 @@ public class Profile extends JFrame {
 		btnBack.setBounds(37, 0, 50, 50);
 		btnBack.setBorderPainted(false);
 		menuPanel.add(btnBack);
-		
-		
+
+
 
 
 		// MENU: button - save
 		JButton btnSave = new JButton();
-		
-		btnSave.setBackground(grey);
+
+		btnSave.setBackground(white);
 		btnSave.setIcon(new ImageIcon("images/save.png"));
 		btnSave.setBounds(906, 0, 50, 50);
 		btnSave.setBorderPainted(false);
@@ -173,23 +175,23 @@ public class Profile extends JFrame {
 		mainPanel.setBackground(grey);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
-		
-		
+
+
 		JButton lblCamera = new JButton();
 		lblPatientPhoto = new JLabel();
 
-		lblCamera.setBounds(29, 20, 50, 30);		
+		lblCamera.setBounds(29, 20, 50, 30);
 		lblCamera.setBorderPainted(false);
 
 		lblCamera.setIcon(new ImageIcon("images/camera.png"));
 		lblCamera.addMouseListener(new MouseAdapter() {
-			
+
 			// source: http://stackoverflow.com/questions/13517770/jfilechooser-filters
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				File imgFile = null;
 				FileFilter imageFilter = new FileNameExtensionFilter(
-						"Image files", ImageIO.getReaderFileSuffixes()); 
+						"Image files", ImageIO.getReaderFileSuffixes());
 				JFileChooser fc = new JFileChooser();
 
 				fc.addChoosableFileFilter(imageFilter);
@@ -201,7 +203,7 @@ public class Profile extends JFrame {
 					System.out.println(imgFile.getPath());
 					String ext = "." + FilenameUtils.getExtension(imgFile.getAbsolutePath()); // http://stackoverflow.com/questions/3571223/how-do-i-get-the-file-extension-of-a-file-in-java
 					new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
-					
+
 					InputStream is;
 					try {
 						is = new BufferedInputStream(new FileInputStream("images/profile" + ext));
@@ -216,15 +218,15 @@ public class Profile extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					
+
+
 				}
-				
+
 			}
 		});
 		mainPanel.add(lblCamera);
 
-		
+
 		lblPatientPhoto.setBounds(37, 20, 200, 200);
 		lblPatientPhoto.setBackground(green);
 		lblPatientPhoto.setOpaque(true);
@@ -349,12 +351,12 @@ public class Profile extends JFrame {
 		mainPanel.add(tfPhoneNumber);
 
 		DefaultListModel listModel = new DefaultListModel();
-		
-		
+
+
 		JList list = new JList(listModel);
 		list.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		    	
+
 		        evt.getSource();
 		        if (evt.getClickCount() == 2) {
 					 final ImageIcon icon = new ImageIcon("images/profile.jpg");
@@ -366,12 +368,12 @@ public class Profile extends JFrame {
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setBounds(622, 145, 340, 320);
-		
+
 		list.setCellRenderer(new BookCellRenderer());
 		list.setVisibleRowCount(4);
-		
+
 		mainPanel.add(list);
-		
+
 		JScrollPane scrollPane = new JScrollPane(list);
 		scrollPane.setBounds(622, 145, 340, 320);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -444,13 +446,13 @@ public class Profile extends JFrame {
 
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.addMouseListener(new MouseAdapter() {
-			
+
 			// source: http://stackoverflow.com/questions/13517770/jfilechooser-filters
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				File imgFile = null;
 				FileFilter imageFilter = new FileNameExtensionFilter(
-						"Image files", ImageIO.getReaderFileSuffixes()); 
+						"Image files", ImageIO.getReaderFileSuffixes());
 				JFileChooser fc = new JFileChooser();
 
 				fc.addChoosableFileFilter(imageFilter);
@@ -462,13 +464,13 @@ public class Profile extends JFrame {
 					System.out.println(imgFile.getPath());
 					String ext = "." + FilenameUtils.getExtension(imgFile.getAbsolutePath()); // http://stackoverflow.com/questions/3571223/how-do-i-get-the-file-extension-of-a-file-in-java
 					new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
-					
+
 					InputStream is;
 					try {
 						is = new BufferedInputStream(new FileInputStream("images/profile" + ext));
 						Image savedImg = ImageIO.read(is);
 						savedImg = savedImg.getScaledInstance(150, 100, Image.SCALE_SMOOTH); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
-						
+
 						listModel.addElement(new BookEntry("hello", new ImageIcon(savedImg)));
 
 					} catch (FileNotFoundException e1) {
@@ -478,15 +480,15 @@ public class Profile extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					
+
+
 				}
-				
+
 			}
 		});
 		btnUpload.setBounds(615, 472, 177, 29);
 		mainPanel.add(btnUpload);
-		
+
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override
@@ -578,20 +580,20 @@ public class Profile extends JFrame {
 		label.setBackground(white);
 		label.setBounds(260, 110, 700, 2);
 		mainPanel.add(label);
-		
+
 		JComboBox cbGender = new JComboBox();
 		cbGender.addActionListener (new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 
 				String iconPath = null;
-				
+
 				try{
 				iconPath = lblPatientPhoto.getIcon().toString();
 				}
 				catch (Exception e1){
 					// TODO: implement logger
 				}
-				
+
 				if (lblPatientPhoto.getIcon() == null || iconPath.equals("images/default_female.png") ){
 					lblCamera.setIcon(new ImageIcon("images/camera.png"));
 					lblPatientPhoto.setIcon(new ImageIcon("images/default_male.png"));
@@ -600,27 +602,27 @@ public class Profile extends JFrame {
 					lblCamera.setIcon(new ImageIcon("images/camera.png"));
 					lblPatientPhoto.setIcon(new ImageIcon("images/default_female.png"));
 				}
-				
-			
+
+
 		}
 
 		});
 		cbGender.setBounds(106, 472, 136, 30);
-		cbGender.addItem(new String("Male"));
-		cbGender.addItem(new String("Female"));
+		cbGender.addItem("Male");
+		cbGender.addItem("Female");
 		mainPanel.add(cbGender);
-		
+
 		JLabel lblBilling = new JLabel("Billing:");
 		lblBilling.setBounds(744, 20, 43, 30);
 		lblBilling.setFont(new Font(lblBilling.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblBilling);
-		
+
 		JComboBox cbBilling = new JComboBox();
 		cbBilling.setBounds(792, 20, 170, 30);
-		cbBilling.addItem(new String("Paid"));
-		cbBilling.addItem(new String("Payment outstanding"));
+		cbBilling.addItem("Paid");
+		cbBilling.addItem("Pending");
 		mainPanel.add(cbBilling);
-		
+
 		JTextArea taComments = new JTextArea();
 		taComments.setBounds(255, 233, 350, 263);
 		taComments.setEditable(true);
@@ -630,42 +632,34 @@ public class Profile extends JFrame {
 		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		mainPanel.add(sp);
-			
-		
+
+
 		btnSave.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("resource")
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				Connection connection = SQLiteConnector.dbConnector();
 
-				PreparedStatement pst = null;
-				int count = 0;
+                connection = SQLiteConnector.dbConnector();
 
-				// source: https://www.youtube.com/watch?v=6cNYUc2PIag
-				try {		
-					
-					
-					Statement stmt = connection.createStatement();
-					String query1 = "select count(*) from PatientInfo";
-					ResultSet rs = stmt.executeQuery(query1);
-					
-					while (rs.next()){
-						count++;
-					}
-					
-					rs.close();
-					stmt.close();
-					
-					System.out.println(count);		
-								
-					
-					String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-					pst = connection.prepareStatement(query);
-					
+
+                try{
+
+
+                    int count = 0;
+
+                    String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    String query2 = ("select scount(*) AS count from PatientInfo");
+
+                    PreparedStatement pst = connection.prepareStatement(query2);
+                    ResultSet rs = pst.executeQuery();
+                    count = rs.getInt("count");
+                    System.out.println(count);
+
+                    pst = connection.prepareStatement(query);
+
 					pst.setString(1, tfFirstName.getText());
 					pst.setString(2, tfLastName.getText());
-					pst.setString(3, dateDOB.getDate().toString());
+					pst.setString(3, DateFormat.getDateInstance().format(dateDOB.getDate()) == "" ? "none" : DateFormat.getDateInstance().format(dateDOB.getDate()));
 					pst.setString(4, tfStreet.getText());
 					pst.setString(5, tfPostCode.getText());
 					pst.setString(6, tfCity.getText());
@@ -677,13 +671,14 @@ public class Profile extends JFrame {
 					pst.setString(12, taComments.getText());
 					pst.setString(13, cbInsurance.getSelectedItem().toString());
 					pst.setString(14, "hello");
-					pst.setString(15, dateAppointment.getDate().toString());
+					pst.setString(15, DateFormat.getDateInstance().format(dateAppointment.getDate()) == "" ? "none" : DateFormat.getDateInstance().format(dateAppointment.getDate()));
 
-					pst.execute();
 					JOptionPane.showMessageDialog(null, "Data Saved");
 
-					pst.close();
-				}
+                    pst.executeUpdate();
+
+                    pst.close();
+    				}
 				catch (SQLException e1) {
 					System.err.println("No connection with SQLite possible.");
 					e1.printStackTrace();
@@ -712,9 +707,9 @@ public class Profile extends JFrame {
 				btnSave.setOpaque(false);
 			}
 		});
-		
 
-		
+
+
 
 		contentPane.setVisible(true);
 		setContentPane(contentPane);

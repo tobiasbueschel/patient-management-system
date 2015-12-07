@@ -311,6 +311,10 @@ public class Home extends JFrame {
 
                 table = new JTable();
                 table.setModel(jTable1Model);
+
+                TableRowSorter<TableModel>sorter = new TableRowSorter<TableModel>(jTable1Model);
+                table.setRowSorter(sorter);
+
                 table.setBounds(37, 20, 926, 477);
                 table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
                 table.setAutoCreateRowSorter(true);
@@ -365,10 +369,27 @@ public class Home extends JFrame {
                 txtSearch.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyReleased(KeyEvent e) {
-                        String query = txtSearch.getText().toLowerCase();
-                        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel) table.getModel());
-                        table.setRowSorter(sorter);
-                        sorter.setRowFilter(RowFilter.regexFilter(query));
+
+
+                        String text = txtSearch.getText();
+                        if(text.length() == 0){
+                            sorter.setRowFilter(null);
+                        }
+                        else{
+                            sorter.setRowFilter(RowFilter.regexFilter(text));
+                        }
+
+//                        RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
+//                            public boolean include(Entry entry) {
+//                                Integer population = (Integer) entry.getValue(1);
+//                                return population.intValue() > 3;
+//
+//
+//
+//                        String query = txtSearch.getText().toLowerCase();
+//                        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+//                        table.setRowSorter(sorter);
+//                        sorter.setRowFilter(RowFilter.regexFilter(query));
                     }
                 });
 
