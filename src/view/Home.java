@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -23,26 +25,31 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import model.SQLiteConnector;
 import net.miginfocom.swing.MigLayout;
+import net.proteanit.sql.DbUtils;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JMenuBar;
 import javax.swing.JTable;
 
-
 public class Home extends JFrame {
 
 	private JPanel contentPane;
-	private Color green = new Color(0,189,154);
-	private Color grey = new Color(222,222,222);
-	private Color darkGrey = new Color(112,112,112);
-	private Color white = new Color(255,255,255);
+	private Color green = new Color(0, 189, 154);
+	private Color grey = new Color(222, 222, 222);
+	private Color darkGrey = new Color(112, 112, 112);
+	private Color white = new Color(255, 255, 255);
 	private JTextField txtSearch;
 	private JTable table;
 	private JPanel mainPanel;
-
+	Connection connection = null;
 
 	/**
 	 * Create the frame.
@@ -233,11 +240,47 @@ public class Home extends JFrame {
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
-
-
 		table = new JTable();
 		table.setBounds(37, 20, 926, 477);
 		mainPanel.add(table);
+		
+		
+		connection = SQLiteConnector.dbConnector();
+		
+		// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
+		try {
+			String query = "select firstname, lastname, medicalCondition, nextAppointment, billing, comment from PatientInfo";
+			
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			
+			// from http://sourceforge.net/projects/finalangelsanddemons/ -> rs2xml.jar
+			table.setModel(DbUtils.resultSetToTableModel(rs));
+			pst.close();
+			rs.close();
+		}
+		catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, e1);
+		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		
+
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(37, 20, 926, 477);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+
+		mainPanel.add(scrollPane);
 
 		
 		

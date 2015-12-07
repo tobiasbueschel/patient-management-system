@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
@@ -168,6 +169,14 @@ public class Login extends JFrame {
 
 				catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1);
+				}
+				finally{
+					try {
+						connection.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 
 			}

@@ -32,12 +32,17 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 
+import model.SQLiteConnector;
 import net.miginfocom.swing.MigLayout;
+import net.proteanit.sql.DbUtils;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -57,6 +62,7 @@ import com.toedter.calendar.JDateChooser;
 import controller.CopyFile;
 import controller.BookEntry;
 
+import java.sql.Connection;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
@@ -77,9 +83,16 @@ public class Profile extends JFrame {
 	private JTextField tfPhoneNumber;
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
-	private JTextField textField;
+	private JTextField tfComments;
 	private JLabel lblFullName;
 	private JLabel lblPatientPhoto;
+	private JDateChooser dateDOB;
+	private JDateChooser dateAppointment;
+	private JComboBox<String> cbGender;
+	private JComboBox<String> cbBilling;
+	private JComboBox<String> cbInsurance;
+
+	
 	private String[] insurances = { "A La Carte Healthcare",
 			"ACE European Group Limited", "AIG Direct",
 			"Allianz Worldwide Care Limited", "Amariz Health Insurance",
@@ -101,6 +114,9 @@ public class Profile extends JFrame {
 		setResizable(false);
 		contentPane.setLayout(null);
 
+		Connection connection = SQLiteConnector.dbConnector();
+
+		
 		// MENU: Panel
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBounds(0, 0, 1000, 50);
@@ -131,35 +147,77 @@ public class Profile extends JFrame {
 		});
 		btnBack.setBackground(white);
 		btnBack.setIcon(new ImageIcon("images/back.png"));
-		btnBack.setBounds(10, 0, 50, 50);
+		btnBack.setBounds(37, 0, 50, 50);
 		btnBack.setBorderPainted(false);
 		menuPanel.add(btnBack);
 
 		// MENU: button - save
-		JButton btnLogout = new JButton();
-		btnLogout.addMouseListener(new MouseAdapter() {
+		JButton btnSave = new JButton();
+		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// do something
+				
+				PreparedStatement pst = null;
+				
+				// populates JTabel source: https://www.youtube.com/watch?v=6cNYUc2PIag
+				try {
+					String query = "insert into PatientInfo (firstName, lastName, dob, street, postCode, city, phoneNumber, emergencyNumber, gender, medicalCondition, billing, comment, insurance, profilePhoto, nextAppointment) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					pst = connection.prepareStatement(query);
+		
+					pst.setString(1, tfFirstName.getText());
+					pst.setString(2, tfLastName.getText());
+					pst.setString(3, "as");
+					pst.setString(4, tfStreet.getText());
+					pst.setString(5, tfPostCode.getText());
+					pst.setString(6, tfCity.getText());
+					pst.setInt(7, Integer.valueOf(tfPhoneNumber.getText()));
+					pst.setInt(8, Integer.valueOf(tfEmergency.getText()));
+					pst.setString(9, "as");
+					pst.setString(10, tfMedicalCondition.getText());
+					pst.setString(11, "as");
+					pst.setString(12, tfComments.getText());
+					pst.setString(13, "as");
+					pst.setString(14, "as");
+					pst.setString(15, "as");
+
+					pst.execute();
+					JOptionPane.showMessageDialog(null, "Data Saved");
+					
+				}
+				catch (Exception e1) {
+					System.out.println(e1);
+					e1.printStackTrace();
+				}
+				finally{
+					  if(pst != null) {
+					    try {
+							pst.close();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					  }
+					}
+				
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				btnLogout.setIcon(new ImageIcon("images/save_inverted.png"));
-				btnLogout.setOpaque(true);
+				btnSave.setIcon(new ImageIcon("images/save_inverted.png"));
+				btnSave.setOpaque(true);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				btnLogout.setIcon(new ImageIcon("images/save.png"));
-				btnLogout.setOpaque(false);
+				btnSave.setIcon(new ImageIcon("images/save.png"));
+				btnSave.setOpaque(false);
 			}
 		});
-		btnLogout.setBackground(grey);
-		btnLogout.setIcon(new ImageIcon("images/save.png"));
-		btnLogout.setBounds(940, 0, 50, 50);
-		btnLogout.setBorderPainted(false);
-		menuPanel.add(btnLogout);
+		btnSave.setBackground(grey);
+		btnSave.setIcon(new ImageIcon("images/save.png"));
+		btnSave.setBounds(906, 0, 50, 50);
+		btnSave.setBorderPainted(false);
+		menuPanel.add(btnSave);
 
 		contentPane.add(menuPanel);
 
@@ -346,10 +404,10 @@ public class Profile extends JFrame {
 		tfPhoneNumber.setBounds(107, 410, 135, 30);
 		mainPanel.add(tfPhoneNumber);
 
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(255, 230, 350, 270);
-		mainPanel.add(textField);
+		tfComments = new JTextField();
+		tfComments.setColumns(10);
+		tfComments.setBounds(255, 230, 350, 270);
+		mainPanel.add(tfComments);
 
 		
 		
@@ -385,7 +443,7 @@ public class Profile extends JFrame {
 		mainPanel.add(scrollPane);
 
 		// source: http://toedter.com/jcalendar/
-		JDateChooser dateDOB = new JDateChooser();
+		dateDOB = new JDateChooser();
 
 		System.out.println(dateDOB.getDate());
 
@@ -627,9 +685,7 @@ public class Profile extends JFrame {
 		cbBilling.addItem(new String("Payment outstanding"));
 		mainPanel.add(cbBilling);
 		
-
 		
-
 
 		contentPane.setVisible(true);
 		setContentPane(contentPane);
