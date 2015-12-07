@@ -48,6 +48,8 @@ import com.toedter.calendar.JDateChooser;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Profile extends JFrame {
 
@@ -66,6 +68,7 @@ public class Profile extends JFrame {
 	private JTextField tfEmergency;
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
+	private JLabel lblFullName;
 
 	/**
 	 * Create the frame.
@@ -142,29 +145,33 @@ public class Profile extends JFrame {
 
 		// ===============================================================================================
 		// Main Panel
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 50, 1000, 528);
 		mainPanel.setBackground(white);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
-
+		
 		JLabel lblPatientPhoto = new JLabel("Patient Photo");
 		lblPatientPhoto.setBounds(20, 20, 220, 200);
 		lblPatientPhoto.setBackground(green);
 		lblPatientPhoto.setOpaque(true);
 		mainPanel.add(lblPatientPhoto);
 
-		// fullname
-		JLabel FullName = new JLabel();
-		FullName.setBounds(260, 31, 340, 30);
-		mainPanel.add(FullName);
-
+		StringBuilder sb = new StringBuilder();
+		lblFullName = new JLabel();
+		
 		// firstname
 		JLabel lblFirstname = new JLabel("Firstname:");
 		lblFirstname.setBounds(30, 230, 75, 30);
 		mainPanel.add(lblFirstname);
 
 		tfFirstName = new JTextField();
+		tfFirstName.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+			}
+		});
 		tfFirstName.setBounds(100, 230, 140, 30);
 		mainPanel.add(tfFirstName);
 		tfFirstName.setColumns(10);
@@ -176,8 +183,19 @@ public class Profile extends JFrame {
 
 		tfLastName = new JTextField();
 		tfLastName.setBounds(100, 260, 140, 30);
+		tfLastName.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+			}
+		});
 		mainPanel.add(tfLastName);
 		tfLastName.setColumns(10);
+		
+		// fullname
+		lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+		lblFullName.setFont(new Font(lblFullName.getFont().toString(), Font.BOLD, 18));
+		lblFullName.setBounds(260, 31, 340, 30);
+		mainPanel.add(lblFullName);
 
 		// DOB
 		JLabel lblDoB = new JLabel("DOB:");
@@ -313,23 +331,29 @@ public class Profile extends JFrame {
 		dateDOB.setBounds(100, 290, 140, 28);
 		dateDOB.setBackground(grey);
 		dateDOB.setBorder(BorderFactory.createEmptyBorder());
+		
+		if (dateDOB.getDate() == null) {
+			dateDOB.setMaxSelectableDate(new Date()); 
+		}
+		
 		mainPanel.add(dateDOB);
 
 		JDateChooser dateAppointment = new JDateChooser();
 		dateAppointment.setBounds(385, 68, 220, 28);
 		dateAppointment.setBackground(grey);
 		dateAppointment.setBorder(BorderFactory.createEmptyBorder());
+		dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
+		// source: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
 		if (dateAppointment.getDate() == null) {
-			dateAppointment.setMinSelectableDate(new Date()); // source:
-																// http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
+			dateAppointment.setMinSelectableDate(new Date()); 
 		}
 
 		mainPanel.add(dateAppointment);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(692, 69, 270, 27);
-		mainPanel.add(comboBox);
+		JComboBox cbInsurance = new JComboBox();
+		cbInsurance.setBounds(692, 69, 270, 27);
+		mainPanel.add(cbInsurance);
 
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setBounds(792, 472, 177, 29);
@@ -366,8 +390,7 @@ public class Profile extends JFrame {
 
 		JLabel lblInsuranceCompany = new JLabel("Insurance:");
 		lblInsuranceCompany.setBounds(622, 73, 80, 16);
-		lblInsuranceCompany.setFont(new Font(lblInsuranceCompany.getFont()
-				.toString(), Font.BOLD, 12));
+		lblInsuranceCompany.setFont(new Font(lblInsuranceCompany.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblInsuranceCompany);
 
 		JLabel lblNextAppointment = new JLabel("Next Appointment:");
@@ -433,18 +456,20 @@ public class Profile extends JFrame {
 		lblComments.setFont(new Font(lblComments.getFont().toString(),
 				Font.BOLD, 12));
 		mainPanel.add(lblComments);
+		
+		JLabel label = new JLabel();
+		label.setOpaque(true);
+		label.setBackground(white);
+		label.setBounds(260, 110, 700, 2);
+		mainPanel.add(label);
 
 		JLabel lblPatientInfoBG = new JLabel("");
 		lblPatientInfoBG.setOpaque(true);
 		lblPatientInfoBG.setBackground(grey);
-		lblPatientInfoBG.setBounds(20, 111, 960, 399);
+		lblPatientInfoBG.setBounds(20, 20, 960, 490);
 		mainPanel.add(lblPatientInfoBG);
 
-		JLabel label = new JLabel("");
-		label.setOpaque(true);
-		label.setBackground(new Color(222, 222, 222));
-		label.setBounds(239, 20, 741, 83);
-		mainPanel.add(label);
+
 
 		contentPane.setVisible(true);
 		setContentPane(contentPane);
