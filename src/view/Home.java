@@ -225,7 +225,7 @@ public class Home extends JFrame {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 50, 1000, 528);
 		mainPanel.setLayout(new MigLayout("", "[]", "[]"));
-		mainPanel.setBackground(white);
+		mainPanel.setBackground(grey);
 		contentPane.add(mainPanel);
 		
 

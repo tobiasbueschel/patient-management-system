@@ -143,7 +143,7 @@ public class Profile extends JFrame {
 				btnLogout.setOpaque(false);
 			}
 		});
-		btnLogout.setBackground(white);
+		btnLogout.setBackground(grey);
 		btnLogout.setIcon(new ImageIcon("images/save.png"));
 		btnLogout.setBounds(940, 0, 50, 50);
 		btnLogout.setBorderPainted(false);
@@ -156,7 +156,7 @@ public class Profile extends JFrame {
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 50, 1000, 528);
-		mainPanel.setBackground(white);
+		mainPanel.setBackground(grey);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 
@@ -204,8 +204,8 @@ public class Profile extends JFrame {
 		// fullname
 		lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
 		lblFullName.setFont(new Font(lblFullName.getFont().toString(),
-				Font.BOLD, 24));
-		lblFullName.setBounds(260, 31, 340, 30);
+				Font.BOLD, 30));
+		lblFullName.setBounds(260, 20, 340, 30);
 		mainPanel.add(lblFullName);
 
 		// DOB
@@ -214,12 +214,12 @@ public class Profile extends JFrame {
 		mainPanel.add(lblDoB);
 
 		JLabel lblAge = new JLabel("Age:");
-		lblAge.setBounds(622, 31, 70, 30);
+		lblAge.setBounds(622, 20, 70, 30);
 		lblAge.setFont(new Font(lblAge.getFont().toString(), Font.BOLD, 12));
 		mainPanel.add(lblAge);
 
 		JLabel lblAgeCalculated = new JLabel();
-		lblAgeCalculated.setBounds(696, 31, 140, 30);
+		lblAgeCalculated.setBounds(657, 20, 75, 30);
 		mainPanel.add(lblAgeCalculated);
 
 		// Street
@@ -332,7 +332,7 @@ public class Profile extends JFrame {
 								.get(Calendar.DAY_OF_MONTH))) {
 					age--;
 				}
-				lblAgeCalculated.setText(String.valueOf(age));
+				lblAgeCalculated.setText(String.valueOf(age) + " years");
 			}
 		});
 		dateDOB.setBounds(100, 290, 140, 30);
@@ -482,13 +482,17 @@ public class Profile extends JFrame {
 		cbGender.addItem(new String("Male"));
 		cbGender.addItem(new String("Female"));
 		mainPanel.add(cbGender);
-
-		JLabel lblPatientInfoBG = new JLabel("");
-		lblPatientInfoBG.setOpaque(true);
-		lblPatientInfoBG.setBackground(grey);
-		lblPatientInfoBG.setBounds(20, 20, 960, 490);
-		mainPanel.add(lblPatientInfoBG);
 		
+		JLabel lblBilling = new JLabel("Billing:");
+		lblBilling.setBounds(744, 20, 43, 30);
+		lblBilling.setFont(new Font(lblBilling.getFont().toString(), Font.BOLD, 12));
+		mainPanel.add(lblBilling);
+		
+		JComboBox cbBilling = new JComboBox();
+		cbBilling.setBounds(792, 20, 170, 30);
+		cbBilling.addItem(new String("Paid"));
+		cbBilling.addItem(new String("Payment outstanding"));
+		mainPanel.add(cbBilling);
 
 
 		contentPane.setVisible(true);
