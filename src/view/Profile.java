@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -346,8 +349,17 @@ public class Profile extends JFrame {
 
 
 		
-		JList list = new JList();
+		DefaultListModel listModel = new DefaultListModel();
+		listModel.addElement("Jane Doe");
+		listModel.addElement("John Smith");
+		listModel.addElement("Kathy Green");
+		
+		
+		JList list = new JList(listModel);
+		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
 		list.setBounds(622, 145, 340, 320);
+		
 		mainPanel.add(list);
 		
 		JScrollPane scrollPane = new JScrollPane(list);
