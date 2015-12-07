@@ -4,17 +4,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 
-// source: https://www.youtube.com/watch?v=cjVB8wT4kA0
-class BookEntry {
+// source: http://www.java2s.com/Code/Java/Swing-JFC/UseJListcomponenttodisplaycustomobjectswithListCellRenderer.htm
+public class BookEntry {
 	  private final String title;
 
-	  private final String imagePath;
+	  private final ImageIcon image;
 
-	  private ImageIcon image;
-
-	  public BookEntry(String title, String imagePath) {
+	  public BookEntry(String title, ImageIcon img) {
 	    this.title = title;
-	    this.imagePath = imagePath;
+	    this.image = img;
 	  }
 
 	  public String getTitle() {
@@ -22,9 +20,6 @@ class BookEntry {
 	  }
 
 	  public ImageIcon getImage() {
-	    if (image == null) {
-	      image = new ImageIcon(imagePath);
-	    }
 	    return image;
 	  }
 

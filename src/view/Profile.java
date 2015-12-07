@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -44,6 +45,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -52,7 +55,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.toedter.calendar.JDateChooser;
 
 import controller.CopyFile;
-import controller.ImgsNText;
+import controller.BookEntry;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -348,20 +351,30 @@ public class Profile extends JFrame {
 		textField.setBounds(255, 230, 350, 270);
 		mainPanel.add(textField);
 
-
+		
 		
 		DefaultListModel listModel = new DefaultListModel();
 		
-		JList list = new JList();
+		
+		JList list = new JList(listModel);
+		list.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		    	
+		        evt.getSource();
+		        if (evt.getClickCount() == 2) {
+					 final ImageIcon icon = new ImageIcon("images/profile.jpg");
+				        JOptionPane.showMessageDialog(null, null, null, JOptionPane.INFORMATION_MESSAGE, icon);
+		        }
+		    }
+		});
 
 
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setBounds(622, 145, 340, 320);
 		
-		JList booklist = new JList("hello", "/images/profile.png");
-		booklist.setCellRenderer(new BookCellRenderer());
-		booklist.setVisibleRowCount(4);
+		list.setCellRenderer(new BookCellRenderer());
+		list.setVisibleRowCount(4);
 		
 		mainPanel.add(list);
 		
@@ -433,17 +446,17 @@ public class Profile extends JFrame {
 
 		mainPanel.add(cbInsurance);
 
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(792, 472, 177, 29);
-		mainPanel.add(btnDelete);
+
 
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.addMouseListener(new MouseAdapter() {
+			
+			// source: http://stackoverflow.com/questions/13517770/jfilechooser-filters
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				File imgFile = null;
 				FileFilter imageFilter = new FileNameExtensionFilter(
-						"Image files", ImageIO.getReaderFileSuffixes()); // source:
-																			// http://stackoverflow.com/questions/13517770/jfilechooser-filters
+						"Image files", ImageIO.getReaderFileSuffixes()); 
 				JFileChooser fc = new JFileChooser();
 
 				fc.addChoosableFileFilter(imageFilter);
@@ -451,14 +464,44 @@ public class Profile extends JFrame {
 
 				int status = fc.showOpenDialog(null);
 				if (status == JFileChooser.APPROVE_OPTION) {
-					File imgFile = fc.getSelectedFile();
+					imgFile = fc.getSelectedFile();
 					System.out.println(imgFile.getPath());
-				}
+					String ext = "." + FilenameUtils.getExtension(imgFile.getAbsolutePath()); // http://stackoverflow.com/questions/3571223/how-do-i-get-the-file-extension-of-a-file-in-java
+					new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
+					
+					InputStream is;
+					try {
+						is = new BufferedInputStream(new FileInputStream("images/profile" + ext));
+						Image savedImg = ImageIO.read(is);
+						savedImg = savedImg.getScaledInstance(150, 100, Image.SCALE_SMOOTH); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
+						
+						listModel.addElement(new BookEntry("hello", new ImageIcon(savedImg)));
 
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+				}
+				
 			}
 		});
 		btnUpload.setBounds(615, 472, 177, 29);
 		mainPanel.add(btnUpload);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				listModel.removeElementAt(list.getSelectedIndex());
+			}
+		});
+		btnDelete.setBounds(792, 472, 177, 29);
+		mainPanel.add(btnDelete);
 
 		JLabel lblMedicalImages = new JLabel("Medical Images:");
 		lblMedicalImages.setBounds(622, 115, 121, 30);

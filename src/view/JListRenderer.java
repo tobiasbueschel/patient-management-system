@@ -7,8 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import controller.BookEntry;
+
+
+// source: http://www.java2s.com/Code/Java/Swing-JFC/UseJListcomponenttodisplaycustomobjectswithListCellRenderer.htm
 class BookCellRenderer extends JLabel implements ListCellRenderer {
-	  private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+	  private static final 
+	  Color green = new Color(0, 189, 154);
+
 
 	  public BookCellRenderer() {
 	    setOpaque(true);
@@ -20,8 +26,9 @@ class BookCellRenderer extends JLabel implements ListCellRenderer {
 	    BookEntry entry = (BookEntry) value;
 	    setText(entry.getTitle());
 	    setIcon(entry.getImage());
+	    
 	    if (isSelected) {
-	      setBackground(HIGHLIGHT_COLOR);
+	      setBackground(green);
 	      setForeground(Color.white);
 	    } else {
 	      setBackground(Color.white);

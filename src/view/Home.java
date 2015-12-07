@@ -29,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JMenuBar;
+import javax.swing.JTable;
 
 
 public class Home extends JFrame {
@@ -38,7 +39,9 @@ public class Home extends JFrame {
 	private Color grey = new Color(222,222,222);
 	private Color darkGrey = new Color(112,112,112);
 	private Color white = new Color(255,255,255);
-	private JTextField textField;
+	private JTextField txtSearch;
+	private JTable table;
+	private JPanel mainPanel;
 
 
 	/**
@@ -73,15 +76,16 @@ public class Home extends JFrame {
 		comboBox.setForeground(white);
 		comboBox.setBackground(green);
 		comboBox.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		comboBox.setBounds(225, 0, 112, 50);
+		comboBox.setBounds(225, 10, 134, 35);
 		comboBox.setOpaque(true);
 		menuPanel.add(comboBox);
 		
 		// MENU: search field
-		textField = new JTextField();
-		textField.setBounds(349, 16, 134, 28);
-		textField.setColumns(10);
-		menuPanel.add(textField);
+		txtSearch = new JTextField();
+		txtSearch.setText("Search...");
+		txtSearch.setBounds(370, 12, 176, 28);
+		txtSearch.setColumns(10);
+		menuPanel.add(txtSearch);
 		
 		
 		// MENU: button - new patient
@@ -221,14 +225,19 @@ public class Home extends JFrame {
 		contentPane.add(menuPanel);
 
 		
+		
 		// Main Panel
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setBounds(0, 50, 1000, 528);
-		mainPanel.setLayout(new MigLayout("", "[]", "[]"));
 		mainPanel.setBackground(grey);
 		contentPane.add(mainPanel);
+		mainPanel.setLayout(null);
 		
 
+
+		table = new JTable();
+		table.setBounds(37, 20, 926, 477);
+		mainPanel.add(table);
 
 		
 		
