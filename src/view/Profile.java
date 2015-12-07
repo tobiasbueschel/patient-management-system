@@ -165,10 +165,11 @@ public class Profile extends JFrame {
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
-		lblPatientPhoto = new JLabel();
 		
 		JButton lblCamera = new JButton();
-		lblCamera.setBounds(37, 180, 50, 30);		
+		lblPatientPhoto = new JLabel();
+
+		lblCamera.setBounds(29, 20, 50, 30);		
 		lblCamera.setBorderPainted(false);
 
 		lblCamera.setIcon(new ImageIcon("images/camera.png"));
@@ -343,21 +344,17 @@ public class Profile extends JFrame {
 		textField.setBounds(255, 230, 350, 270);
 		mainPanel.add(textField);
 
+
+		
 		JList list = new JList();
-		list.setToolTipText("");
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {};
-
-			public int getSize() {
-				return values.length;
-			}
-
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
 		list.setBounds(622, 145, 340, 320);
 		mainPanel.add(list);
+		
+		JScrollPane scrollPane = new JScrollPane(list);
+		scrollPane.setBounds(622, 145, 340, 320);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		mainPanel.add(scrollPane);
 
 		// source: http://toedter.com/jcalendar/
 		JDateChooser dateDOB = new JDateChooser();
@@ -531,6 +528,31 @@ public class Profile extends JFrame {
 		mainPanel.add(label);
 		
 		JComboBox cbGender = new JComboBox();
+		cbGender.addActionListener (new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+
+				String iconPath = null;
+				
+				try{
+				iconPath = lblPatientPhoto.getIcon().toString();
+				}
+				catch (Exception e1){
+					// TODO: implement logger
+				}
+				
+				if (lblPatientPhoto.getIcon() == null || iconPath.equals("images/default_female.png") ){
+					lblCamera.setIcon(new ImageIcon("images/camera.png"));
+					lblPatientPhoto.setIcon(new ImageIcon("images/default_male.png"));
+				}
+				else if (iconPath.equals("images/default_male.png")){
+					lblCamera.setIcon(new ImageIcon("images/camera.png"));
+					lblPatientPhoto.setIcon(new ImageIcon("images/default_female.png"));
+				}
+				
+			
+		}
+
+		});
 		cbGender.setBounds(106, 472, 136, 30);
 		cbGender.addItem(new String("Male"));
 		cbGender.addItem(new String("Female"));
