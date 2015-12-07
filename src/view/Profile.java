@@ -44,7 +44,11 @@ import javax.swing.AbstractListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.toedter.calendar.JDateChooser;
+
+import controller.CopyFile;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -159,19 +163,54 @@ public class Profile extends JFrame {
 		mainPanel.setBackground(grey);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
+		
+		JButton lblCamera = new JButton();
+		lblCamera.setBounds(37, 180, 50, 30);		
+		lblCamera.setBorderPainted(false);
+		lblCamera.setBackground(green);
+		lblCamera.setOpaque(true);
+		lblCamera.setIcon(new ImageIcon("images/camera.png"));
+		lblCamera.addMouseListener(new MouseAdapter() {
+			
+			// source: http://stackoverflow.com/questions/13517770/jfilechooser-filters
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				File imgFile = null;
+				FileFilter imageFilter = new FileNameExtensionFilter(
+						"Image files", ImageIO.getReaderFileSuffixes()); 
+				JFileChooser fc = new JFileChooser();
 
-		JLabel lblPatientPhoto = new JLabel("Patient Photo");
-		lblPatientPhoto.setBounds(20, 20, 220, 200);
+				fc.addChoosableFileFilter(imageFilter);
+				fc.setAcceptAllFileFilterUsed(false);
+
+				int status = fc.showOpenDialog(null);
+				if (status == JFileChooser.APPROVE_OPTION) {
+					imgFile = fc.getSelectedFile();
+					System.out.println(imgFile.getPath());
+				}
+				
+				System.out.println("getAbsolutePath" + imgFile.getAbsolutePath());
+				System.out.println("getAbsolutePath" + imgFile.getAbsolutePath());
+				
+				String ext = FilenameUtils.getExtension(imgFile.getAbsolutePath());
+				new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
+
+			}
+		});
+		mainPanel.add(lblCamera);
+
+		
+		JLabel lblPatientPhoto = new JLabel("");
+		lblPatientPhoto.setBounds(37, 20, 200, 200);
 		lblPatientPhoto.setBackground(green);
 		lblPatientPhoto.setOpaque(true);
 		mainPanel.add(lblPatientPhoto);
 
-		StringBuilder sb = new StringBuilder();
 		lblFullName = new JLabel();
 
 		// firstname
 		JLabel lblFirstname = new JLabel("Firstname:");
-		lblFirstname.setBounds(30, 230, 75, 30);
+		lblFirstname.setBounds(37, 230, 75, 30);
 		mainPanel.add(lblFirstname);
 
 		tfFirstName = new JTextField();
@@ -181,17 +220,17 @@ public class Profile extends JFrame {
 						+ tfLastName.getText());
 			}
 		});
-		tfFirstName.setBounds(100, 230, 140, 30);
+		tfFirstName.setBounds(107, 230, 135, 30);
 		mainPanel.add(tfFirstName);
 		tfFirstName.setColumns(10);
 
 		// lastname
 		JLabel lblLastName = new JLabel("Lastname:");
-		lblLastName.setBounds(30, 260, 75, 30);
+		lblLastName.setBounds(37, 260, 75, 30);
 		mainPanel.add(lblLastName);
 
 		tfLastName = new JTextField();
-		tfLastName.setBounds(100, 260, 140, 30);
+		tfLastName.setBounds(107, 260, 135, 30);
 		tfLastName.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				lblFullName.setText(tfFirstName.getText() + " "
@@ -203,14 +242,14 @@ public class Profile extends JFrame {
 
 		// fullname
 		lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
-		lblFullName.setFont(new Font(lblFullName.getFont().toString(),
-				Font.BOLD, 30));
+		lblFullName.setForeground(green);
+		lblFullName.setFont(new Font(lblFullName.getFont().toString(),Font.BOLD, 30));
 		lblFullName.setBounds(260, 20, 340, 30);
 		mainPanel.add(lblFullName);
 
 		// DOB
 		JLabel lblDoB = new JLabel("DOB:");
-		lblDoB.setBounds(30, 290, 75, 30);
+		lblDoB.setBounds(37, 290, 75, 30);
 		mainPanel.add(lblDoB);
 
 		JLabel lblAge = new JLabel("Age:");
@@ -224,49 +263,49 @@ public class Profile extends JFrame {
 
 		// Street
 		JLabel lblStreet = new JLabel("Street:");
-		lblStreet.setBounds(30, 320, 70, 30);
+		lblStreet.setBounds(37, 320, 70, 30);
 		mainPanel.add(lblStreet);
 
 		tfStreet = new JTextField();
-		tfStreet.setBounds(100, 320, 140, 30);
+		tfStreet.setBounds(107, 320, 135, 30);
 		mainPanel.add(tfStreet);
 		tfStreet.setColumns(10);
 
 		// PostCode
 		JLabel lblPostCode = new JLabel("Postcode:");
-		lblPostCode.setBounds(30, 350, 70, 30);
+		lblPostCode.setBounds(37, 350, 70, 30);
 		mainPanel.add(lblPostCode);
 
 		tfPostCode = new JTextField();
-		tfPostCode.setBounds(100, 350, 140, 30);
+		tfPostCode.setBounds(107, 350, 135, 30);
 		mainPanel.add(tfPostCode);
 		tfPostCode.setColumns(10);
 
 		// City
 		JLabel lblCity = new JLabel("City:");
-		lblCity.setBounds(30, 380, 70, 30);
+		lblCity.setBounds(37, 380, 70, 30);
 		mainPanel.add(lblCity);
 
 		tfCity = new JTextField();
-		tfCity.setBounds(100, 380, 140, 30);
+		tfCity.setBounds(107, 380, 135, 30);
 		mainPanel.add(tfCity);
 		tfCity.setColumns(10);
 
 		JLabel lblPhone = new JLabel("Phone:");
-		lblPhone.setBounds(30, 410, 75, 30);
+		lblPhone.setBounds(37, 410, 75, 30);
 		mainPanel.add(lblPhone);
 
 		JLabel lblEmergency = new JLabel("Emergency:");
-		lblEmergency.setBounds(30, 440, 75, 30);
+		lblEmergency.setBounds(37, 440, 75, 30);
 		mainPanel.add(lblEmergency);
 
 		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setBounds(30, 470, 75, 30);
+		lblGender.setBounds(37, 470, 75, 30);
 		mainPanel.add(lblGender);
 
 		tfEmergency = new JTextField();
 		tfEmergency.setColumns(10);
-		tfEmergency.setBounds(100, 440, 140, 30);
+		tfEmergency.setBounds(107, 440, 135, 30);
 		mainPanel.add(tfEmergency);
 
 		tfMedicalCondition = new JTextField();
@@ -282,7 +321,7 @@ public class Profile extends JFrame {
 
 		tfPhoneNumber = new JTextField();
 		tfPhoneNumber.setColumns(10);
-		tfPhoneNumber.setBounds(100, 410, 140, 30);
+		tfPhoneNumber.setBounds(107, 410, 135, 30);
 		mainPanel.add(tfPhoneNumber);
 
 		textField = new JTextField();
@@ -335,7 +374,7 @@ public class Profile extends JFrame {
 				lblAgeCalculated.setText(String.valueOf(age) + " years");
 			}
 		});
-		dateDOB.setBounds(100, 290, 140, 30);
+		dateDOB.setBounds(107, 290, 135, 30);
 		dateDOB.setBackground(grey);
 		dateDOB.setBorder(BorderFactory.createEmptyBorder());
 
@@ -478,7 +517,7 @@ public class Profile extends JFrame {
 		mainPanel.add(label);
 		
 		JComboBox cbGender = new JComboBox();
-		cbGender.setBounds(99, 472, 143, 30);
+		cbGender.setBounds(106, 472, 136, 30);
 		cbGender.addItem(new String("Male"));
 		cbGender.addItem(new String("Female"));
 		mainPanel.add(cbGender);
@@ -493,6 +532,9 @@ public class Profile extends JFrame {
 		cbBilling.addItem(new String("Paid"));
 		cbBilling.addItem(new String("Payment outstanding"));
 		mainPanel.add(cbBilling);
+		
+
+		
 
 
 		contentPane.setVisible(true);
