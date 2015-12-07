@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Image;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -24,8 +25,7 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -72,6 +72,7 @@ public class Profile extends JFrame {
 	private JTextField tfMedicalCondition;
 	private JTextField textField;
 	private JLabel lblFullName;
+	private JLabel lblPatientPhoto;
 	private String[] insurances = { "A La Carte Healthcare",
 			"ACE European Group Limited", "AIG Direct",
 			"Allianz Worldwide Care Limited", "Amariz Health Insurance",
@@ -164,11 +165,12 @@ public class Profile extends JFrame {
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
+		lblPatientPhoto = new JLabel();
+		
 		JButton lblCamera = new JButton();
 		lblCamera.setBounds(37, 180, 50, 30);		
 		lblCamera.setBorderPainted(false);
-		lblCamera.setBackground(green);
-		lblCamera.setOpaque(true);
+
 		lblCamera.setIcon(new ImageIcon("images/camera.png"));
 		lblCamera.addMouseListener(new MouseAdapter() {
 			
@@ -187,20 +189,32 @@ public class Profile extends JFrame {
 				if (status == JFileChooser.APPROVE_OPTION) {
 					imgFile = fc.getSelectedFile();
 					System.out.println(imgFile.getPath());
+					String ext = "." + FilenameUtils.getExtension(imgFile.getAbsolutePath()); // http://stackoverflow.com/questions/3571223/how-do-i-get-the-file-extension-of-a-file-in-java
+					new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
+					
+					InputStream is;
+					try {
+						is = new BufferedInputStream(new FileInputStream("images/profile" + ext));
+						Image savedImg = ImageIO.read(is);
+						savedImg = savedImg.getScaledInstance(200, 200, Image.SCALE_SMOOTH); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
+						lblPatientPhoto.setIcon(new ImageIcon(savedImg));
+
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
 				}
 				
-				System.out.println("getAbsolutePath" + imgFile.getAbsolutePath());
-				System.out.println("getAbsolutePath" + imgFile.getAbsolutePath());
-				
-				String ext = FilenameUtils.getExtension(imgFile.getAbsolutePath());
-				new CopyFile(imgFile.getAbsolutePath(), "images/profile" + ext);
-
 			}
 		});
 		mainPanel.add(lblCamera);
 
 		
-		JLabel lblPatientPhoto = new JLabel("");
 		lblPatientPhoto.setBounds(37, 20, 200, 200);
 		lblPatientPhoto.setBackground(green);
 		lblPatientPhoto.setOpaque(true);
