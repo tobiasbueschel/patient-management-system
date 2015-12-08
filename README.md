@@ -1,8 +1,11 @@
 # patient-management-system
-A patient management system developed in Java.
+A patient management system developed in Java
 
-##Beautiful yet simple graphical user interface design
+##Simple, yet beautiful GUI
 
+### Login Screen
 ![login screen](images/screens/login.png)
+
+### Home Screen
 ![home screen](images/screens/home.png)
 
