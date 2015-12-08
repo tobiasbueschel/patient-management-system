@@ -3,6 +3,6 @@ A patient management system developed in Java.
 
 ##Beautiful yet simple graphical user interface design
 
-![login screen](https://raw.github.com/tobiasbueschel/patient-management-system/images/screens/login.png)
-![home screen](https://raw.github.com/tobiasbueschel/patient-management-system/images/screens/home.png)
+![login screen](images/screens/login.png)
+![home screen](images/screens/home.png)
 
