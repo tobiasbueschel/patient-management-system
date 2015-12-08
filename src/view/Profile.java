@@ -227,7 +227,6 @@ public class Profile extends JFrame {
         tfLastName.setColumns(10);
 
         /** fullname label */
-        lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
         lblFullName.setForeground(CustomColors.green);
         lblFullName.setFont(new Font(lblFullName.getFont().toString(), Font.BOLD, 30));
         lblFullName.setBounds(260, 20, 340, 30);
@@ -725,6 +724,8 @@ public class Profile extends JFrame {
                 cbInsurance.setSelectedItem("insurance");
 //                lblPatientPhoto.setIcon(new ImageIcon("profilePhoto"));
                 patientID = Integer.parseInt(rs.getString("patientID"));
+                lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
+
 
             }
 
