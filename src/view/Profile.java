@@ -2,6 +2,7 @@ package view;
 
 import com.toedter.calendar.JDateChooser;
 import controller.CopyFile;
+import controller.ImageDatabase;
 import controller.ImageLoader;
 import model.SQLiteConnector;
 import org.apache.commons.io.FilenameUtils;
@@ -142,49 +143,7 @@ public class Profile extends JFrame {
         lblCamera.setBorderPainted(false);
 
         lblCamera.setIcon(new ImageIcon("images/camera.png"));
-        lblCamera.addMouseListener(new MouseAdapter() {
 
-            /** listener to allow the user to import an image
-             *  @link: http://stackoverflow.com/questions/13517770/jfilechooser-filters
-             */
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                File imgFile = null;
-                FileFilter imageFilter = new FileNameExtensionFilter(
-                        "Image files", ImageIO.getReaderFileSuffixes());
-                JFileChooser fc = new JFileChooser();
-
-                fc.addChoosableFileFilter(imageFilter);
-                fc.setAcceptAllFileFilterUsed(false);
-
-                int status = fc.showOpenDialog(null);
-                if (status == JFileChooser.APPROVE_OPTION) {
-                    imgFile = fc.getSelectedFile();
-                    System.out.println(imgFile.getPath());
-                    String ext = "." + FilenameUtils.getExtension(imgFile.getAbsolutePath()); // http://stackoverflow.com/questions/3571223/how-do-i-get-the-file-extension-of-a-file-in-java
-                    new CopyFile(imgFile.getAbsolutePath(), "images/profile.photos/profile" + ext);
-
-                    InputStream is;
-                    try {
-                        is = new BufferedInputStream(new FileInputStream("images/profile.photos/profile" + ext));
-                        Image savedImg = ImageIO.read(is);
-                        savedImg = savedImg.getScaledInstance(200, 200, Image.SCALE_SMOOTH); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
-                        lblPatientPhoto.setIcon(new ImageIcon(savedImg));
-
-                    } catch (FileNotFoundException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-
-                }
-
-            }
-        });
         mainPanel.add(lblCamera);
 
         lblPatientPhoto.setBounds(37, 20, 200, 200);
