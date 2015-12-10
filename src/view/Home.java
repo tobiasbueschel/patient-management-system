@@ -44,7 +44,7 @@ public class Home extends JFrame {
     private JPanel mainPanel;
 
     /**
-     * Create the frame.
+     * Creates the home frame.
      */
     public Home() {
     	DatabaseLogic dl = new DatabaseLogic();
@@ -344,6 +344,7 @@ public class Home extends JFrame {
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mainPanel.add(table);
 
+        /** creates JScrollPane */
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(37, 20, 926, 477);
         scrollPane.setViewportView(table);

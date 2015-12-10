@@ -24,7 +24,12 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.SQLiteConnector;
-
+/**
+ * This class resembles a patient object and acts as the communicator between the GUI and the SQLite Database
+ * @author Tobias Büschel
+ * @version 0.7
+ *
+ */
 public class DatabaseLogic {
 
 	private static int patientID;

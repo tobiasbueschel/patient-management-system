@@ -3,7 +3,11 @@ package controller;
 import javax.swing.*;
 
 
-// source: http://www.java2s.com/Code/Java/Swing-JFC/UseJListcomponenttodisplaycustomobjectswithListCellRenderer.htm
+/**
+ * ImageLoader is a simple helper class that populates the JList - Medical Images
+ * @author Tobias Büschel
+ * @link: http://www.java2s.com/Code/Java/Swing-JFC/UseJListcomponenttodisplaycustomobjectswithListCellRenderer.htm
+ */
 public class ImageLoader {
     private final String title;
 
@@ -22,7 +26,7 @@ public class ImageLoader {
         return image;
     }
 
-    // Override standard toString method to give a useful result
+    /** Override the standard "toString" method to give a useful result */
     public String toString() {
         return title;
     }

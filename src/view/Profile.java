@@ -2,6 +2,7 @@ package view;
 
 import com.toedter.calendar.JDateChooser;
 import controller.DatabaseLogic;
+import controller.ImageCellRenderer;
 import controller.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
@@ -253,7 +254,7 @@ public class Profile extends JFrame {
 
         listModel = new DefaultListModel<ImageLoader>();
 
-        // allows to view images in higher resolutions
+        /** allows to view images in higher resolutions */
         list = new JList<ImageLoader>(listModel);
         list.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -334,6 +335,7 @@ public class Profile extends JFrame {
 //        dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
         /**
+         * 	sets calendar to only show dates that are in the present -> future
          *  @link: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
          */
         if (dateAppointment.getDate() == null) {
@@ -399,7 +401,7 @@ public class Profile extends JFrame {
         mainPanel.add(lblNextAppointment);
 
 
-        /** implementations for the google and youtube search */
+        /** implementations for the google and youtube search link*/
         JButton btnSearchGoogle = new JButton("Search Google");
         btnSearchGoogle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -498,9 +500,8 @@ public class Profile extends JFrame {
         mainPanel.add(sp);
 
         /**
-         * this query writes to the database
-         */
-        
+         * this query writes to / updates the database
+         */     
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
