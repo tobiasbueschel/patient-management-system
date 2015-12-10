@@ -9,8 +9,12 @@ import java.awt.*;
  *
  *  @link: source: http://www.java2s.com/Code/Java/Swing-JFC/UseJListcomponenttodisplaycustomobjectswithListCellRenderer.htm
  */
-class ImageCellRenderer extends JLabel implements ListCellRenderer {
-    private static final
+class ImageCellRenderer extends JLabel implements ListCellRenderer<Object> {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final
     Color green = new Color(0, 189, 154);
 
     /**
@@ -31,7 +35,7 @@ class ImageCellRenderer extends JLabel implements ListCellRenderer {
      * @param cellHasFocus
      * @return
      */
-    public Component getListCellRendererComponent(JList list, Object value,
+    public Component getListCellRendererComponent(JList<?> list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         ImageLoader entry = (ImageLoader) value;
         setText(entry.getTitle());

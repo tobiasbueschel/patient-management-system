@@ -1,35 +1,28 @@
 package controller;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
-
-import org.apache.commons.io.FilenameUtils;
-
 import model.SQLiteConnector;
 
 public class DatabaseLogic {
@@ -37,7 +30,6 @@ public class DatabaseLogic {
 	private static int patientID;
 	private  File profilePhoto = null;
 	private  ArrayList<File> medicalImages = new ArrayList<File>();
-	private  ArrayList<Image> mImg = new ArrayList<Image>();
 
 	public Connection conn = null;
 	
@@ -69,9 +61,7 @@ public class DatabaseLogic {
 	
 	/** inserts new row with an automatically generated patientID */
 	public void insertPatientID(){
-		
-		System.out.println("inserPatientID " + patientID);
-		
+				
 		if (DatabaseLogic.patientID == 0){
 		try {
 			String sql = "insert into PatientInfo default values";
@@ -140,7 +130,6 @@ public class DatabaseLogic {
 			FileInputStream   fis = new FileInputStream(profilePhoto);
 			stmt.setBinaryStream(1, fis, (int) profilePhoto.length());
 			stmt.setInt(2, DatabaseLogic.patientID);
-			System.out.println(DatabaseLogic.patientID);
 			stmt.execute();
 
 			conn.commit();
@@ -168,6 +157,7 @@ public class DatabaseLogic {
         int status = fc.showOpenDialog(null);
         if (status == JFileChooser.APPROVE_OPTION) {
         	file = fc.getSelectedFile();
+        	medicalImages.add(file);
         }
             try {
                 is = new BufferedInputStream(new FileInputStream(file));
@@ -193,12 +183,10 @@ public class DatabaseLogic {
         
 		try {			
         	for (int i = 0; i < medicalImages.size(); i++){
-        		System.out.println(i);
-        		System.out.println(medicalImages.size());
-        		System.out.println(medicalImages.get(i));
+
         		file = medicalImages.get(i);
 				fis = new FileInputStream(file);
-		        String sql = "insert or ignore into PatientImages (patientID, patientImage) values(?,?)";       
+		        String sql = "insert into PatientImages (patientID, patientImage) values(?,?)";       
 		        PreparedStatement stmt = conn.prepareStatement(sql);
 		        
 		        stmt.setInt(1, DatabaseLogic.patientID);
@@ -252,7 +240,22 @@ public class DatabaseLogic {
 		
 	}
 	
-	public void insertDOB(){
+	public void insertDOB(Date date){
+		
+		String dateString = new SimpleDateFormat("MMM d, yy").format(date);
+				
+		try {
+			String sql = "update PatientInfo SET dob=? where patientID=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, dateString);
+			stmt.setInt(2, DatabaseLogic.patientID);
+			stmt.execute();
+
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -427,7 +430,22 @@ public class DatabaseLogic {
 		
 	}
 	
-	public void insertNextAppointment(){
+	public void insertNextAppointment(Date date){
+		
+		String dateString = new SimpleDateFormat("MMMMM d, yyyy").format(date);
+		
+		try {
+			String sql = "update PatientInfo SET nextAppointment=? where patientID=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, dateString);
+			stmt.setInt(2, DatabaseLogic.patientID);
+			stmt.execute();
+
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -469,11 +487,27 @@ public class DatabaseLogic {
 		return lastName;
 	}
 	
-	public String getDOB(int patientID){
-		String lastName = null;
+	public Date getDOB(int patientID, Date date){
+		Date dateDOB = null;
 		
+		if (date != null){
+        try {
+            String sql = "select dob from PatientInfo where patientID=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, patientID);          
+            ResultSet rs = stmt.executeQuery();	            
+            
+    		DateFormat format = new SimpleDateFormat("MMM d, yy");
+    		dateDOB = format.parse(rs.getString(1));
+             
+            rs.close();
+         
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
-		return lastName;
+		return dateDOB;
 	}	
 	
 	public String getStreet(int patientID){
@@ -697,14 +731,33 @@ public class DatabaseLogic {
 			return new ImageIcon(img);   
 	}
 	
-	public File getNextAppointment(int patientID){
-		File nextAppointment = null;
+	public Date getNextAppointment(int patientID, Date date){
 		
+		Date dateParsed = null;
 		
-		return nextAppointment;
+		if (date != null){
+        try {
+            String sql = "select nextAppointment from PatientInfo where patientID=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, patientID);          
+            ResultSet rs = stmt.executeQuery();	            
+            
+    		DateFormat format = new SimpleDateFormat("MMMMM d, yyyy");
+    		dateParsed = format.parse(rs.getString(1));
+             
+            rs.close();
+         
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dateParsed;
 	}
 	
 	public ArrayList<Image> getMedicalImages(int patientID){
+		ArrayList<Image> mImg = new ArrayList<Image>();
+
 		BufferedImage buffImg = null;
 		Image img = null;
 		PreparedStatement stmt = null;
@@ -716,8 +769,6 @@ public class DatabaseLogic {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, patientID);          
             rs = stmt.executeQuery();
-            System.out.println(" Hello ich bin es + size of array" + mImg.size());
-
 	        
             while(rs.next()){
 	            byte[] bl = rs.getBytes("patientImage");
@@ -762,9 +813,7 @@ public class DatabaseLogic {
         
 		try {			
         	for (int i = 0; i < medicalImages.size(); i++){
-        		System.out.println(i);
-        		System.out.println(medicalImages.size());
-        		System.out.println(medicalImages.get(i));
+
         		file = medicalImages.get(i);
 				fis = new FileInputStream(file);
 		        String sql = "insert or ignore into PatientImages (patientID, patientImage) values(?,?)";       
@@ -783,5 +832,20 @@ public class DatabaseLogic {
 			e.printStackTrace();
 		}
         }
+	}
+	
+	public void deletePatient(int id){
+		
+		try {
+			String sql = "delete from PatientInfo where patientID=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setInt(1, id);
+			stmt.execute();
+
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

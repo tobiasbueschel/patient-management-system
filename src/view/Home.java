@@ -18,6 +18,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *  <p>
@@ -30,7 +33,11 @@ import java.sql.SQLException;
  */
 public class Home extends JFrame {
 
-    Connection connection = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	Connection connection = null;
     private JPanel contentPane;
     private JTextField txtSearch;
     private JTable table;
@@ -55,6 +62,16 @@ public class Home extends JFrame {
         menuPanel.setBounds(0, 0, 1000, 50);
         menuPanel.setLayout(null);
         menuPanel.setBackground(CustomColors.green);
+        
+        JLabel lblToday = new JLabel();
+        DateFormat df = new SimpleDateFormat("E dd MMM");
+        Date date = new Date();
+        lblToday.setText(df.format(date));
+        lblToday.setForeground(CustomColors.white);
+        lblToday.setBackground(CustomColors.green);
+        lblToday.setBounds(138, 0, 188, 50);
+        lblToday.setVisible(true);
+        menuPanel.add(lblToday);
 
         /** MENU: title */
         JLabel lblTitle = new JLabel("PRMS");
@@ -62,7 +79,7 @@ public class Home extends JFrame {
         lblTitle.setBackground(CustomColors.green);
         lblTitle.setFont(new Font("Lucida Grande", Font.BOLD, 25));
         lblTitle.setBounds(37, 0, 70, 50);
-        lblTitle.setHorizontalAlignment(lblTitle.CENTER);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         lblTitle.setOpaque(true);
         menuPanel.add(lblTitle);
 
@@ -153,7 +170,7 @@ public class Home extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JFileChooser fc = new JFileChooser();
-                int status = fc.showOpenDialog(null);
+                fc.showOpenDialog(null);
 
             }
         });
@@ -211,17 +228,26 @@ public class Home extends JFrame {
             	
                 int reply = JOptionPane.showConfirmDialog(null, "Would you like to delete this patient?" , "Delete Patient" , JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-                	dl.openConnection();
+                	
                 		if (table.getRowCount() > 0) {
                 			if (table.getSelectedRowCount() > 0) {
                 				int selectedRow[] = table.getSelectedRows();
                 				for (int i : selectedRow) {
                 					try {
-	                                     String query = "delete from PatientInfo where patientID=" + table.getModel().getValueAt(i, 0);
-	                                     PreparedStatement pst = dl.conn.prepareStatement(query);
-	                                     pst.executeUpdate();
-	                                     pst.close();
+                						dl.openConnection();
+	                                     String query = "delete from PatientInfo where patientID=?";
+	                                     PreparedStatement stmt = dl.conn.prepareStatement(query);
+	                                     
+	                        			stmt.setString(1, (String) table.getModel().getValueAt(i, 0));
+	                        			stmt.execute();
+
+	                        			dl.conn.commit();
+	                                     
+	                        			stmt.execute();
+	                        			stmt.close();
 	                                     ((DefaultTableModel) table.getModel()).removeRow(i);
+	                                 	dl.closeConnection();
+
                                  } catch (SQLException e1) {
                                      System.err.println("No connection with SQLite possible.");
                                      e1.printStackTrace();
@@ -229,10 +255,9 @@ public class Home extends JFrame {
                             }
                         }
                     }
-                	dl.closeConnection();
                 }
             else {
-                System.exit(0);
+                JOptionPane.getRootFrame().dispose();
              }
            JOptionPane.showMessageDialog(null, "Successful deleted");
             }});

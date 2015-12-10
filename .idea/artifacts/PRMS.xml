@@ -1,6 +1,12 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="PRMS">
     <output-path>$PROJECT_DIR$</output-path>
+    <properties id="ant-postprocessing">
+      <options enabled="true" />
+    </properties>
+    <properties id="ant-preprocessing">
+      <options enabled="true" />
+    </properties>
     <root id="archive" name="PRMS.jar">
       <element id="module-output" name="PRMS" />
       <element id="library" level="module" name="commons-io-2.4.jar" module-name="PRMS" />

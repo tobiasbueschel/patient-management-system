@@ -23,7 +23,6 @@ public class SQLiteConnector {
 
             /** create the database connection */
             connection = DriverManager.getConnection("jdbc:sqlite:PatientDatabase");
-            System.out.println("connection works");
             return connection;
 
         } catch (Exception e) {

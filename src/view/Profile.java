@@ -1,17 +1,9 @@
 package view;
 
 import com.toedter.calendar.JDateChooser;
-import controller.CopyFile;
 import controller.DatabaseLogic;
-import controller.ImageDatabase;
 import controller.ImageLoader;
-import model.SQLiteConnector;
-import org.apache.commons.io.FilenameUtils;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -20,11 +12,6 @@ import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,7 +25,11 @@ import java.util.Date;
 
 public class Profile extends JFrame {
 
-    private JPanel contentPane;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
     private JTextField tfFirstName , tfLastName , tfStreet, tfPostCode, tfCity, tfPhoneNumber, tfEmergency, tfMedicalCondition;
     private JButton lblCamera;
     private JLabel lblFullName, lblPatientPhoto, lblFirstname;
@@ -64,8 +55,7 @@ public class Profile extends JFrame {
     /**
      * Create the frame.
      */
-    @SuppressWarnings("unchecked")
-	public Profile() {
+    public Profile() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1000, 600);
         contentPane = new JPanel();
@@ -80,7 +70,7 @@ public class Profile extends JFrame {
         menuPanel.setBounds(0, 0, 1000, 50);
         menuPanel.setLayout(null);
         menuPanel.setBackground(CustomColors.green);
-
+        
         /** MENU: button - back */
         JButton btnBack = new JButton();
         btnBack.addMouseListener(new MouseAdapter() {
@@ -116,6 +106,7 @@ public class Profile extends JFrame {
         menuPanel.add(btnBack);
         menuPanel.add(btnSave);
         contentPane.add(menuPanel);
+        
 
         // ========================================== MAIN PANEL =====================================================
         JPanel mainPanel = new JPanel();
@@ -262,7 +253,7 @@ public class Profile extends JFrame {
 
         listModel = new DefaultListModel<ImageLoader>();
 
-        // allows to add images to a list
+        // allows to view images in higher resolutions
         list = new JList<ImageLoader>(listModel);
         list.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -275,7 +266,7 @@ public class Profile extends JFrame {
 					dl.closeConnection();
 					JOptionPane.showMessageDialog(null, null, null, JOptionPane.INFORMATION_MESSAGE, lgIcon);
                 }
-                else{
+                else if (evt.getClickCount() == 2){
                 	JOptionPane.showMessageDialog(null, "Please save first before you view images!", "Information",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -300,8 +291,6 @@ public class Profile extends JFrame {
          */
         dateDOB = new JDateChooser();
 
-        System.out.println(dateDOB.getDate());
-
         /**
          * 	Implementation is attributed to
          *  @link http://stackoverflow.com/questions/24509189/jdatechooser-focuslistener
@@ -310,7 +299,6 @@ public class Profile extends JFrame {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
 
-                // TODO: implement algorithm that deletes age when dateDOB == null
                 Calendar dob = Calendar.getInstance();
                 dob.setTime((Date) e.getNewValue());
 
@@ -330,6 +318,8 @@ public class Profile extends JFrame {
         dateDOB.setBounds(107, 290, 135, 30);
         dateDOB.setBackground(CustomColors.grey);
         dateDOB.setBorder(BorderFactory.createEmptyBorder());
+//        dateDOB.setDateFormatString("MMM d, yy");
+
 
         if (dateDOB.getDate() == null) {
             dateDOB.setMaxSelectableDate(new Date());
@@ -341,7 +331,7 @@ public class Profile extends JFrame {
         dateAppointment.setBounds(385, 68, 220, 28);
         dateAppointment.setBackground(CustomColors.grey);
         dateAppointment.setBorder(BorderFactory.createEmptyBorder());
-        dateAppointment.setDateFormatString("MMMMM d, yyyy");
+//        dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
         /**
          *  @link: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
@@ -366,6 +356,7 @@ public class Profile extends JFrame {
              */
             @Override
             public void mouseClicked(MouseEvent e) {
+            	saved = false;
             	listModel.addElement(new ImageLoader("", dl.setMedicalImages()));	            	
                 }
         });
@@ -381,9 +372,7 @@ public class Profile extends JFrame {
                 int reply = JOptionPane.showConfirmDialog(null, "Would you like to delete this medical image?" , "Delete Image" , JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     listModel.removeElementAt(list.getSelectedIndex());
-                }
-                else {
-                   System.exit(0);
+                    
                 }
             	
             }
@@ -516,6 +505,8 @@ public class Profile extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
             	
+            	saved = true;
+            	
                 dl.openConnection();
                 dl.insertPatientID();
                 dl.insertFirstName(tfFirstName.getText());
@@ -531,8 +522,12 @@ public class Profile extends JFrame {
                 dl.insertComment(taComments.getText());
                 dl.insertInsurance(cbInsurance.getSelectedItem().toString());
                 dl.insertProfilePhoto();
-                dl.insertMedicalImages();                              
+                dl.insertMedicalImages();
+//                dl.insertNextAppointment(dateAppointment.getDate());
+//                dl.insertDOB(dateDOB.getDate());
                 dl.closeConnection();
+                
+                JOptionPane.showMessageDialog(null, "Saving was succesful!");
             }
 
             @Override
@@ -575,7 +570,14 @@ public class Profile extends JFrame {
         cbInsurance.setSelectedItem(dl.getInsurance(patientID));
         lblPatientPhoto.setIcon(dl.getProfilePhoto(patientID));
     	ArrayList<Image> arImg = dl.getMedicalImages(patientID);
-                
+    	
+//    	if (dl.getNextAppointment(patientID, dateAppointment.getDate()) != null){
+//    		dateAppointment.setDate(dl.getNextAppointment(patientID, dateAppointment.getDate()));
+//    	}   	
+//    	if (dl.getDOB(patientID, dateDOB.getDate()) != null){
+//    		dateDOB.setDate(dl.getDOB(patientID, dateDOB.getDate()));
+//    	}
+    	
         if ( arImg.size() != 0){        	
         	for (int i = 0; i < arImg.size() ; i++){        		
             	this.listModel.addElement(new ImageLoader("", new ImageIcon(arImg.get(i).getScaledInstance(310, 200, Image.SCALE_SMOOTH)))); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px

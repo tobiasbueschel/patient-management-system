@@ -22,7 +22,11 @@ import java.sql.SQLException;
 
 public class Login extends JFrame {
 
-    private JPanel contentPane;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
     private JTextField textFieldUN;
     private JPasswordField passwordField;
     private JButton btnLogin;
