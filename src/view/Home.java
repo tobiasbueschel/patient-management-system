@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import controller.DatabaseLogic;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -37,7 +40,7 @@ public class Home extends JFrame {
      * Create the frame.
      */
     public Home() {
-        connection = SQLiteConnector.dbConnector();
+    	DatabaseLogic dl = new DatabaseLogic();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1000, 600);
         contentPane = new JPanel();
@@ -205,44 +208,34 @@ public class Home extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-
-                if (table.getRowCount() > 0) {
-                    if (table.getSelectedRowCount() > 0) {
-                        int selectedRow[] = table.getSelectedRows();
-                        for (int i : selectedRow) {
-
-                            connection = SQLiteConnector.dbConnector();
-
-                            try {
-                                String query = "delete from PatientInfo where patientID=" + table.getModel().getValueAt(i, 0);
-                                System.out.println(query);
-                                PreparedStatement pst = connection.prepareStatement(query);
-                                pst.executeUpdate();
-
-
-                                pst.close();
-                            } catch (SQLException e1) {
-                                System.err.println("No connection with SQLite possible.");
-                                e1.printStackTrace();
-                            } finally {
-                                if (connection != null) {
-                                    try {
-                                        connection.close();
-                                    } catch (SQLException e1) {
-                                        // TODO Auto-generated catch block
-                                        e1.printStackTrace();
-                                    }
-                                }
+            	
+                int reply = JOptionPane.showConfirmDialog(null, "Would you like to delete this patient?" , "Delete Patient" , JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                	dl.openConnection();
+                		if (table.getRowCount() > 0) {
+                			if (table.getSelectedRowCount() > 0) {
+                				int selectedRow[] = table.getSelectedRows();
+                				for (int i : selectedRow) {
+                					try {
+	                                     String query = "delete from PatientInfo where patientID=" + table.getModel().getValueAt(i, 0);
+	                                     PreparedStatement pst = dl.conn.prepareStatement(query);
+	                                     pst.executeUpdate();
+	                                     pst.close();
+	                                     ((DefaultTableModel) table.getModel()).removeRow(i);
+                                 } catch (SQLException e1) {
+                                     System.err.println("No connection with SQLite possible.");
+                                     e1.printStackTrace();
+                                 } 
                             }
-
-                            ((DefaultTableModel) table.getModel()).removeRow(i);
-
                         }
-
                     }
+                	dl.closeConnection();
                 }
-            }
-        });
+            else {
+                System.exit(0);
+             }
+           JOptionPane.showMessageDialog(null, "Successful deleted");
+            }});
 
         btnDelete.setBackground(CustomColors.white);
         btnDelete.setIcon(new ImageIcon("images/delete.png"));
@@ -338,6 +331,8 @@ public class Home extends JFrame {
          */
         try {
             String query = "select patientID, firstname, lastname, medicalCondition, nextAppointment, phoneNumber, billing, comment from PatientInfo";
+            
+            Connection connection = SQLiteConnector.dbConnector();
             PreparedStatement pst = connection.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
 
@@ -366,7 +361,6 @@ public class Home extends JFrame {
                 try {
                     connection.close();
                 } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
