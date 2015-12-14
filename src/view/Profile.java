@@ -528,7 +528,7 @@ public class Profile extends JFrame {
 //                dl.insertDOB(dateDOB.getDate());
                 dl.closeConnection();
                 
-                JOptionPane.showMessageDialog(null, "Saving was succesful!");
+                JOptionPane.showMessageDialog(null, "Saving was successful!");
             }
 
             @Override
