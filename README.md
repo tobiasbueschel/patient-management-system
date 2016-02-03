@@ -6,3 +6,6 @@ A patient management system developed in Java
 ### Login Screen
 
 ### Home Screen
+
+##License
+See the [license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
