@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry exported="true" kind="lib" path="libs/sqlite-jdbc-3.8.11.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jcalendar-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Tobias/Downloads/commons-io-2.4/commons-io-2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Tobias/Downloads/rs2xml.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
