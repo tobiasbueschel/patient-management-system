@@ -2,6 +2,10 @@ package view;
 
 import com.toedter.calendar.JDateChooser;
 import controller.DatabaseLogic;
+<<<<<<< HEAD
+=======
+import controller.ImageCellRenderer;
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
 import controller.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
@@ -253,7 +257,11 @@ public class Profile extends JFrame {
 
         listModel = new DefaultListModel<ImageLoader>();
 
+<<<<<<< HEAD
         // allows to view images in higher resolutions
+=======
+        /** allows to view images in higher resolutions */
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         list = new JList<ImageLoader>(listModel);
         list.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -334,6 +342,10 @@ public class Profile extends JFrame {
 //        dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
         /**
+<<<<<<< HEAD
+=======
+         * 	sets calendar to only show dates that are in the present -> future
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
          *  @link: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
          */
         if (dateAppointment.getDate() == null) {
@@ -399,7 +411,11 @@ public class Profile extends JFrame {
         mainPanel.add(lblNextAppointment);
 
 
+<<<<<<< HEAD
         /** implementations for the google and youtube search */
+=======
+        /** implementations for the google and youtube search link*/
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         JButton btnSearchGoogle = new JButton("Search Google");
         btnSearchGoogle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -498,9 +514,14 @@ public class Profile extends JFrame {
         mainPanel.add(sp);
 
         /**
+<<<<<<< HEAD
          * this query writes to the database
          */
         
+=======
+         * this query writes to / updates the database
+         */     
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -527,7 +548,11 @@ public class Profile extends JFrame {
 //                dl.insertDOB(dateDOB.getDate());
                 dl.closeConnection();
                 
+<<<<<<< HEAD
                 JOptionPane.showMessageDialog(null, "Saving was succesful!");
+=======
+                JOptionPane.showMessageDialog(null, "Saving was successful!");
+>>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
             }
 
             @Override
