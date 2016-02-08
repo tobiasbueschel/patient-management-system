@@ -4,15 +4,13 @@ A patient management system developed in Java
 ##Simple, yet beautiful GUI
 
 ### Login Screen
-<<<<<<< HEAD
 ![login screen](images/screens/login.png)
 
-### Home Screen
-![home screen](images/screens/home.png)
+### Patient Overview
+![patient overview](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/overview.png)
 
-=======
-
-### Home Screen
+### Patient Profiles
+![patient profiles](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/profile.png)
 
 ##License
 See the [license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
