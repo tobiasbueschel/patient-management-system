@@ -14,4 +14,3 @@ A patient management system developed in Java
 
 ##License
 See the [license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
