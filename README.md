@@ -13,4 +13,4 @@ A patient management system developed in Java with the Swing GUI widget toolkit
 ![patient profiles](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/profile.png)
 
 ##License
-See the [license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
+See the [MIT license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
