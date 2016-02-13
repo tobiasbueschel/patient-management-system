@@ -1,5 +1,5 @@
 # Patient Management System
-A patient management system developed in Java with the Swing GUI widget toolkit
+A patient management system developed in Java with the Swing GUI widget toolkit.
 
 ##Simple, yet beautiful GUI
 
