@@ -1,7 +1,7 @@
 # Patient Management System
-A patient management system developed in Java with the Swing GUI widget toolkit.
+> A patient management system developed in Java with the Swing GUI widget toolkit.
 
-##Simple, yet beautiful GUI
+## Simple, yet beautiful GUI
 
 ### Login Screen
 ![login screen](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/login.png)
@@ -12,5 +12,5 @@ A patient management system developed in Java with the Swing GUI widget toolkit.
 ### Patient Profiles
 ![patient profiles](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/profile.png)
 
-##License
+## License
 See the [MIT license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
