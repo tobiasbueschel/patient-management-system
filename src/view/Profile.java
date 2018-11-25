@@ -2,10 +2,7 @@ package view;
 
 import com.toedter.calendar.JDateChooser;
 import controller.DatabaseLogic;
-<<<<<<< HEAD
-=======
 import controller.ImageCellRenderer;
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
 import controller.ImageLoader;
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +27,7 @@ import java.util.Date;
 public class Profile extends JFrame {
 
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -55,7 +52,7 @@ public class Profile extends JFrame {
             "Castle Cover", "CI Healthcare", "CIGNA", "Cirencester Friendly Society Limited", "CIS Health Insurance", "Combined Insurance", "Countrywide",
             "CS Healthcare", "Dencover Insurance", "Denplan Insurance", "Dentists and General Insurance", "Direct Line Life"};
 
-    
+
     /**
      * Create the frame.
      */
@@ -74,7 +71,7 @@ public class Profile extends JFrame {
         menuPanel.setBounds(0, 0, 1000, 50);
         menuPanel.setLayout(null);
         menuPanel.setBackground(CustomColors.green);
-        
+
         /** MENU: button - back */
         JButton btnBack = new JButton();
         btnBack.addMouseListener(new MouseAdapter() {
@@ -110,7 +107,7 @@ public class Profile extends JFrame {
         menuPanel.add(btnBack);
         menuPanel.add(btnSave);
         contentPane.add(menuPanel);
-        
+
 
         // ========================================== MAIN PANEL =====================================================
         JPanel mainPanel = new JPanel();
@@ -131,7 +128,7 @@ public class Profile extends JFrame {
         lblCamera.setIcon(new ImageIcon("images/camera.png"));
         lblCamera.setVisible(true);
         mainPanel.add(lblCamera);
-     
+
         lblPatientPhoto = new JLabel();
         lblPatientPhoto.setBounds(37, 20, 200, 200);
         lblPatientPhoto.setBackground(CustomColors.green);
@@ -193,7 +190,7 @@ public class Profile extends JFrame {
         JLabel lblStreet = new JLabel("Street:");
         lblStreet.setBounds(37, 320, 70, 30);
         mainPanel.add(lblStreet);
-        
+
         tfStreet = new JTextField();
         tfStreet.setBounds(107, 320, 135, 30);
         mainPanel.add(tfStreet);
@@ -228,7 +225,7 @@ public class Profile extends JFrame {
         JLabel lblEmergency = new JLabel("Emergency:");
         lblEmergency.setBounds(37, 440, 75, 30);
         mainPanel.add(lblEmergency);
-        
+
         tfEmergency = new JTextField();
         tfEmergency.setColumns(10);
         tfEmergency.setBounds(107, 440, 135, 30);
@@ -257,11 +254,7 @@ public class Profile extends JFrame {
 
         listModel = new DefaultListModel<ImageLoader>();
 
-<<<<<<< HEAD
-        // allows to view images in higher resolutions
-=======
         /** allows to view images in higher resolutions */
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         list = new JList<ImageLoader>(listModel);
         list.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -269,7 +262,7 @@ public class Profile extends JFrame {
                 if (evt.getClickCount() == 2 && saved == true) {
                 	dl.openConnection();
                 	Image img = dl.getMedicalImages(dl.getPatientID()).get(list.getSelectedIndex());
-                	BufferedImage bimg = (BufferedImage) img;              	
+                	BufferedImage bimg = (BufferedImage) img;
 					ImageIcon lgIcon = new ImageIcon(img.getScaledInstance(bimg.getWidth(), bimg.getHeight(), Image.SCALE_SMOOTH));
 					dl.closeConnection();
 					JOptionPane.showMessageDialog(null, null, null, JOptionPane.INFORMATION_MESSAGE, lgIcon);
@@ -342,10 +335,7 @@ public class Profile extends JFrame {
 //        dateAppointment.setDateFormatString("MMMMM d, yyyy");
 
         /**
-<<<<<<< HEAD
-=======
          * 	sets calendar to only show dates that are in the present -> future
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
          *  @link: http://stackoverflow.com/questions/22092365/hide-or-disable-past-dates-on-jdatechooser
          */
         if (dateAppointment.getDate() == null) {
@@ -359,7 +349,7 @@ public class Profile extends JFrame {
             cbInsurance.addItem(insurances[count]);
         }
         mainPanel.add(cbInsurance);
-        
+
         JButton btnUpload = new JButton("Upload");
         btnUpload.addMouseListener(new MouseAdapter() {
             /**
@@ -369,10 +359,10 @@ public class Profile extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
             	saved = false;
-            	listModel.addElement(new ImageLoader("", dl.setMedicalImages()));	            	
+            	listModel.addElement(new ImageLoader("", dl.setMedicalImages()));
                 }
         });
-        
+
         btnUpload.setBounds(615, 472, 177, 29);
         mainPanel.add(btnUpload);
 
@@ -380,13 +370,13 @@ public class Profile extends JFrame {
         btnDelete.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	
+
                 int reply = JOptionPane.showConfirmDialog(null, "Would you like to delete this medical image?" , "Delete Image" , JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     listModel.removeElementAt(list.getSelectedIndex());
-                    
+
                 }
-            	
+
             }
         });
         btnDelete.setBounds(792, 472, 177, 29);
@@ -411,11 +401,7 @@ public class Profile extends JFrame {
         mainPanel.add(lblNextAppointment);
 
 
-<<<<<<< HEAD
-        /** implementations for the google and youtube search */
-=======
         /** implementations for the google and youtube search link*/
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         JButton btnSearchGoogle = new JButton("Search Google");
         btnSearchGoogle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -513,21 +499,12 @@ public class Profile extends JFrame {
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(sp);
 
-        /**
-<<<<<<< HEAD
-         * this query writes to the database
-         */
-        
-=======
-         * this query writes to / updates the database
-         */     
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	
+
             	saved = true;
-            	
+
                 dl.openConnection();
                 dl.insertPatientID();
                 dl.insertFirstName(tfFirstName.getText());
@@ -547,12 +524,8 @@ public class Profile extends JFrame {
 //                dl.insertNextAppointment(dateAppointment.getDate());
 //                dl.insertDOB(dateDOB.getDate());
                 dl.closeConnection();
-                
-<<<<<<< HEAD
-                JOptionPane.showMessageDialog(null, "Saving was succesful!");
-=======
+
                 JOptionPane.showMessageDialog(null, "Saving was successful!");
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
             }
 
             @Override
@@ -577,9 +550,9 @@ public class Profile extends JFrame {
     public Profile(final int patientID) {
         this();
 
-        DatabaseLogic dl = new DatabaseLogic(patientID);        
+        DatabaseLogic dl = new DatabaseLogic(patientID);
         dl.openConnection();
-                
+
         tfFirstName.setText(dl.getFirstName(patientID));
         tfLastName.setText(dl.getLastName(patientID));
         lblFullName.setText(dl.getFirstName(patientID) + " " + dl.getLastName(patientID));
@@ -595,21 +568,21 @@ public class Profile extends JFrame {
         cbInsurance.setSelectedItem(dl.getInsurance(patientID));
         lblPatientPhoto.setIcon(dl.getProfilePhoto(patientID));
     	ArrayList<Image> arImg = dl.getMedicalImages(patientID);
-    	
+
 //    	if (dl.getNextAppointment(patientID, dateAppointment.getDate()) != null){
 //    		dateAppointment.setDate(dl.getNextAppointment(patientID, dateAppointment.getDate()));
-//    	}   	
+//    	}
 //    	if (dl.getDOB(patientID, dateDOB.getDate()) != null){
 //    		dateDOB.setDate(dl.getDOB(patientID, dateDOB.getDate()));
 //    	}
-    	
-        if ( arImg.size() != 0){        	
-        	for (int i = 0; i < arImg.size() ; i++){        		
+
+        if ( arImg.size() != 0){
+        	for (int i = 0; i < arImg.size() ; i++){
             	this.listModel.addElement(new ImageLoader("", new ImageIcon(arImg.get(i).getScaledInstance(310, 200, Image.SCALE_SMOOTH)))); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
-        	}	
+        	}
         }
-        
-        
+
+
         dl.closeConnection();
     }
 }

@@ -24,16 +24,12 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.SQLiteConnector;
-<<<<<<< HEAD
-
-=======
 /**
  * This class resembles a patient object and acts as the communicator between the GUI and the SQLite Database
  * @author Tobias Büschel
  * @version 0.7
  *
  */
->>>>>>> 8f89938e3b67df0e005b64ff9f79cb3e5ca5137f
 public class DatabaseLogic {
 
 	private static int patientID;
@@ -41,7 +37,7 @@ public class DatabaseLogic {
 	private  ArrayList<File> medicalImages = new ArrayList<File>();
 
 	public Connection conn = null;
-	
+
 	// DEFAULT CONSTRUCTOR
 	public DatabaseLogic(){
 		patientID = 0;
@@ -51,35 +47,35 @@ public class DatabaseLogic {
 	public DatabaseLogic(int patientID){
 		DatabaseLogic.patientID = patientID;
 	}
-	
+
 	// OPENS DATABASE CONNECTION
 	public void openConnection(){
 		conn = SQLiteConnector.dbConnector();
 		try {conn.setAutoCommit(false);}
 		catch (SQLException e) {e.printStackTrace();}
 	}
-	
+
 	// CLOSES DATABASE CONNECTION
 	public void closeConnection(){
 		try {this.conn.close();}
 		catch (SQLException e) {e.printStackTrace();}
 	}
-	
-	
+
+
 	// ========================================= SETTER METHODS ============================================
-	
+
 	/** inserts new row with an automatically generated patientID */
 	public void insertPatientID(){
-				
+
 		if (DatabaseLogic.patientID == 0){
 		try {
 			String sql = "insert into PatientInfo default values";
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			
+
 			int aRows = stmt.executeUpdate();
 			conn.commit();
-			
-			
+
+
 			/** sets new patientID @link http://stackoverflow.com/questions/1915166/how-to-get-the-insert-id-in-jdbc */
 			 if (aRows == 0) {
 		            throw new SQLException("Failed to create new patient.");
@@ -92,29 +88,29 @@ public class DatabaseLogic {
 		            else {
 		                throw new SQLException("Failed to create new patient.");
 		            }
-		        }				
+		        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		}
-		
+
 	}
-	
+
 	public ImageIcon setProfilePhoto() {
 		Image scaledImg = null;
-		
-        FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());        
+
+        FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
         JFileChooser fc = new JFileChooser();
 
         fc.addChoosableFileFilter(imageFilter);
         fc.setAcceptAllFileFilterUsed(false);
-        
+
         int status = fc.showOpenDialog(null);
-        
+
         if (status == JFileChooser.APPROVE_OPTION) {
         	profilePhoto = fc.getSelectedFile();
         }
-		
+
         try {
             InputStream is = new BufferedInputStream(new FileInputStream(profilePhoto));
 			scaledImg = ImageIO.read(is);
@@ -123,14 +119,14 @@ public class DatabaseLogic {
 			e.printStackTrace();
 		}
         scaledImg = scaledImg.getScaledInstance(200, 200, Image.SCALE_SMOOTH); // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
-		
+
 		return new ImageIcon(scaledImg);
 
 	}
-	
-	
+
+
 	public void insertProfilePhoto(){
-		
+
 		if (profilePhoto != null){
 		try {
 			String sql = "update PatientInfo SET profilePhoto=? where patientID=?";
@@ -143,20 +139,20 @@ public class DatabaseLogic {
 
 			conn.commit();
 			fis.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
 		}
-		
+		}
+
 	}
-	
-	
+
+
 	public ImageIcon setMedicalImages(){
 		File file = null;
 		Image img = null;
 		InputStream is = null;
-    	
+
         FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
         JFileChooser fc = new JFileChooser();
 
@@ -181,27 +177,27 @@ public class DatabaseLogic {
             }
             return new ImageIcon(img);
  }
-        
-	
+
+
 
 	public void insertMedicalImages(){
         FileInputStream fis = null;
         File file = null;
-        
+
         if ( !medicalImages.isEmpty() ){
-        
-		try {			
+
+		try {
         	for (int i = 0; i < medicalImages.size(); i++){
 
         		file = medicalImages.get(i);
 				fis = new FileInputStream(file);
-		        String sql = "insert into PatientImages (patientID, patientImage) values(?,?)";       
+		        String sql = "insert into PatientImages (patientID, patientImage) values(?,?)";
 		        PreparedStatement stmt = conn.prepareStatement(sql);
-		        
+
 		        stmt.setInt(1, DatabaseLogic.patientID);
 		        stmt.setBinaryStream(2, fis, (int) file.length());
 		        stmt.execute();
-	
+
 		        conn.commit();
 		        fis.close();
 		        stmt.close();
@@ -210,13 +206,13 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
         }
-	
+
 	}
-	
+
 	public void insertFirstName(String firstName){
-		
+
 		try {
 			String sql = "update PatientInfo SET firstName=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -229,11 +225,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertLastName(String lastName){
-		
+
 		try {
 			String sql = "update PatientInfo SET lastName=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -246,13 +242,13 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertDOB(Date date){
-		
+
 		String dateString = new SimpleDateFormat("MMM d, yy").format(date);
-				
+
 		try {
 			String sql = "update PatientInfo SET dob=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -265,11 +261,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertStreet(String street){
-		
+
 		try {
 			String sql = "update PatientInfo SET street=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -282,11 +278,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertPostCode(String postCode){
-		
+
 		try {
 			String sql = "update PatientInfo SET postCode=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -299,11 +295,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertCity(String city){
-		
+
 		try {
 			String sql = "update PatientInfo SET city=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -316,11 +312,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertPhoneNumber(String phoneNumber){
-		
+
 		try {
 			String sql = "update PatientInfo SET phoneNumber=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -333,12 +329,12 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
+
+
 	public void insertEmergency(String emergencyNumber){
-		
+
 		try {
 			String sql = "update PatientInfo SET emergencyNumber=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -351,11 +347,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertGender(String gender){
-		
+
 		try {
 			String sql = "update PatientInfo SET gender=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -368,11 +364,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertMedicalCondition(String medicalCondition){
-		
+
 		try {
 			String sql = "update PatientInfo SET medicalCondition=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -385,11 +381,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertBilling(String billing){
-		
+
 		try {
 			String sql = "update PatientInfo SET billing=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -402,11 +398,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertComment(String comment){
-		
+
 		try {
 			String sql = "update PatientInfo SET comment=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -419,11 +415,11 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertInsurance(String insurance){
-		
+
 		try {
 			String sql = "update PatientInfo SET insurance=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -436,13 +432,13 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void insertNextAppointment(Date date){
-		
+
 		String dateString = new SimpleDateFormat("MMMMM d, yyyy").format(date);
-		
+
 		try {
 			String sql = "update PatientInfo SET nextAppointment=? where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -455,252 +451,252 @@ public class DatabaseLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	// ========================================= GETTER METHODS ============================================
-	
+
 	public String getFirstName(int patientID){
 		String firstName = null;
 
 	        try {
 	            String sql = "select firstName from PatientInfo where patientID=?";
 	            PreparedStatement stmt = conn.prepareStatement(sql);
-	            stmt.setInt(1, patientID);          
-	            ResultSet rs = stmt.executeQuery();	            
+	            stmt.setInt(1, patientID);
+	            ResultSet rs = stmt.executeQuery();
 	            firstName = rs.getString(1);
 	            rs.close();
-	         
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-		
+
 		return firstName;
 	}
-	
+
 	public String getLastName(int patientID){
 		String lastName = null;
 
         try {
             String sql = "select lastName from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             lastName = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return lastName;
 	}
-	
+
 	public Date getDOB(int patientID, Date date){
 		Date dateDOB = null;
-		
+
 		if (date != null){
         try {
             String sql = "select dob from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
-            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
+
     		DateFormat format = new SimpleDateFormat("MMM d, yy");
     		dateDOB = format.parse(rs.getString(1));
-             
+
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return dateDOB;
-	}	
-	
+	}
+
 	public String getStreet(int patientID){
 		String street = null;
 
         try {
             String sql = "select street from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             street = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return street;
-	}	
-	
+	}
+
 	public String getPostCode(int patientID){
 		String postCode = null;
 
         try {
             String sql = "select postCode from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             postCode = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return postCode;
 	}
-	
+
 	public String getCity(int patientID){
 		String city = null;
-		
+
         try {
             String sql = "select city from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             city = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return city;
-	}	
-	
-	
+	}
+
+
 	public String getPhoneNumber(int patientID){
 		String phoneNumber = null;
-		
+
         try {
             String sql = "select phoneNumber from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             phoneNumber = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return phoneNumber;
-	}	
-	
-	
+	}
+
+
 	public String getEmergencyNumber(int patientID){
 		String emergencyNumber = null;
-		
+
         try {
             String sql = "select emergencyNumber from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             emergencyNumber = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return emergencyNumber;
-	}	
-	
+	}
+
 	public String getGender(int patientID){
 		String gender = null;
-		
+
         try {
             String sql = "select gender from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             gender = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return gender;
 	}
-	
+
 	public String getMedicalCondition(int patientID){
 		String medicalCondition = null;
-		
+
         try {
             String sql = "select medicalCondition from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             medicalCondition = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return medicalCondition;
 	}
-	
+
 	public String getBilling(int patientID){
 		String billing = null;
-		
+
         try {
             String sql = "select billing from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             billing = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return billing;
 	}
-	
+
 	public String getComment(int patientID){
 		String comment = null;
-		
+
         try {
             String sql = "select comment from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             comment = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return comment;
 	}
-	
+
 	public String getInsurance(int patientID){
 		String insurance = null;
-		
+
         try {
             String sql = "select insurance from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
             insurance = rs.getString(1);
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 		return insurance;
 	}
-	
+
 	public ImageIcon getProfilePhoto(int patientID){
 		BufferedImage buffImg = null;
 		Image img = null;
@@ -710,11 +706,11 @@ public class DatabaseLogic {
         try {
             String sql = "select * from PatientInfo where patientID=?";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
+            stmt.setInt(1, patientID);
             rs = stmt.executeQuery();
 
             byte[] bl = rs.getBytes("profilePhoto");
-            
+
             if ( bl != null){
             	   buffImg = ImageIO.read(new ByteArrayInputStream(bl));
                    img = buffImg;
@@ -722,13 +718,13 @@ public class DatabaseLogic {
             }
             else{
             	switch (rs.getString("gender")){
-            	case "Male": 
+            	case "Male":
             		return new ImageIcon("images/profile.photos/default_male.png");
             	case "Female":
             		return new ImageIcon("images/profile.photos/default_female.png");
             	}
             }
-          
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -737,33 +733,33 @@ public class DatabaseLogic {
                 try {stmt.close();} catch (SQLException e) {e.printStackTrace();}
         	}
 
-			return new ImageIcon(img);   
+			return new ImageIcon(img);
 	}
-	
+
 	public Date getNextAppointment(int patientID, Date date){
-		
+
 		Date dateParsed = null;
-		
+
 		if (date != null){
         try {
             String sql = "select nextAppointment from PatientInfo where patientID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
-            ResultSet rs = stmt.executeQuery();	            
-            
+            stmt.setInt(1, patientID);
+            ResultSet rs = stmt.executeQuery();
+
     		DateFormat format = new SimpleDateFormat("MMMMM d, yyyy");
     		dateParsed = format.parse(rs.getString(1));
-             
+
             rs.close();
-         
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return dateParsed;
 	}
-	
+
 	public ArrayList<Image> getMedicalImages(int patientID){
 		ArrayList<Image> mImg = new ArrayList<Image>();
 
@@ -771,24 +767,24 @@ public class DatabaseLogic {
 		Image img = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		       
+
         try{
-        	
+
             String sql = "select patientImage from PatientImages where patientID=?";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, patientID);          
+            stmt.setInt(1, patientID);
             rs = stmt.executeQuery();
-	        
+
             while(rs.next()){
 	            byte[] bl = rs.getBytes("patientImage");
-		            		            
+
 		            if ( bl != null){
 		            	   buffImg = ImageIO.read(new ByteArrayInputStream(bl));
 		                   img = buffImg;
 		                   mImg.add(img);
 		            }
             }
-	            
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -796,16 +792,16 @@ public class DatabaseLogic {
     		try {rs.close();} catch (SQLException e) {e.printStackTrace();}
             try {stmt.close();} catch (SQLException e) {e.printStackTrace();}
     	}
-		
+
 		return mImg;
 	}
-	
-	
+
+
 	public File getMedicalImage(int index) {
 		return medicalImages.get(index);
 	}
-	
-	
+
+
 	public int getPatientID() {
 		return patientID;
 	}
@@ -813,25 +809,25 @@ public class DatabaseLogic {
 	public void setPatientID(int patientID) {
 		DatabaseLogic.patientID =  patientID;
 	}
-	
+
 	public void deleteMedicalImage(){
         FileInputStream fis = null;
         File file = null;
-        
+
         if ( !medicalImages.isEmpty() ){
-        
-		try {			
+
+		try {
         	for (int i = 0; i < medicalImages.size(); i++){
 
         		file = medicalImages.get(i);
 				fis = new FileInputStream(file);
-		        String sql = "insert or ignore into PatientImages (patientID, patientImage) values(?,?)";       
+		        String sql = "insert or ignore into PatientImages (patientID, patientImage) values(?,?)";
 		        PreparedStatement stmt = conn.prepareStatement(sql);
-		        
+
 		        stmt.setInt(1, DatabaseLogic.patientID);
 		        stmt.setBinaryStream(2, fis, (int) file.length());
 		        stmt.execute();
-	
+
 		        conn.commit();
 		        fis.close();
 		        stmt.close();
@@ -842,9 +838,9 @@ public class DatabaseLogic {
 		}
         }
 	}
-	
+
 	public void deletePatient(int id){
-		
+
 		try {
 			String sql = "delete from PatientInfo where patientID=?";
 			PreparedStatement stmt = conn.prepareStatement(sql);

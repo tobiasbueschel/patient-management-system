@@ -23,7 +23,7 @@ import java.sql.SQLException;
 public class Login extends JFrame {
 
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -137,6 +137,12 @@ public class Login extends JFrame {
                     pst.setString(2, String.valueOf(passwordField.getPassword()));
 
                     ResultSet rs = pst.executeQuery();
+
+                    String query2 = "select * from user";
+                    PreparedStatement pst2 = connection.prepareStatement(query2);
+                    ResultSet rs2 = pst2.executeQuery();
+                    System.out.println(rs2.next());
+
                     int count = 0;
 
                     while (rs.next()) {
