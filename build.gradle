@@ -44,7 +44,6 @@ jacocoTestReport {
 }
 
 sonarqube {
-  // Pass all required properties to sonarcloud
   properties {
     property "sonar.host.url", "https://sonarcloud.io"
     property "sonar.login", System.getenv('SONAR_TOKEN')
@@ -52,6 +51,7 @@ sonarqube {
     property "sonar.projectKey", System.getenv('SONAR_PROJECT_KEY')
     property "sonar.sourceEncoding", "UTF-8"
     property "sonar.groovy.jacoco.reportPath", "build/jacoco/test.exec"
+    property "sonar.qualitygate.wait", "true"
   }
 }
 
