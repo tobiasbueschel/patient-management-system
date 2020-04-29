@@ -20,7 +20,7 @@ public class SQLiteConnector {
       Class.forName("org.sqlite.JDBC");
 
       // create the database connection
-      connection = DriverManager.getConnection("jdbc:sqlite:PatientDatabase");
+      connection = DriverManager.getConnection("jdbc:sqlite:PatientDatabase.sqlite");
       return connection;
 
     } catch (Exception e) {
@@ -28,5 +28,4 @@ public class SQLiteConnector {
       return null;
     }
   }
-
 }

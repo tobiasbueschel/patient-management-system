@@ -17,16 +17,20 @@
 
 If you like to develop additional features or fix any bugs, feel free to submit a Pull Request.´
 
+## Database Structure
+This project uses [SQLite](https://www.sqlite.org/index.html) and all data is stored in `PatientData.sqlite`.
+![database structure](/images/db_structure.png)
+
 ## Impressions
 
 ### Login Screen
-![login screen](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/login.png)
+![login screen](/images/login.png)
 
 ### Patient Overview
-![patient overview](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/overview.png)
+![patient overview](/images/overview.png)
 
 ### Patient Profiles
-![patient profiles](https://github.com/tobiasbueschel/patient-management-system/blob/master/images/profile.png)
+![patient profiles](/images/profile.png)
 
 ## License
-See the [MIT license](https://github.com/tobiasbueschel/patient-management-system/blob/master/LICENSE.md)
+See the [MIT license](/LICENSE.md)
