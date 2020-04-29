@@ -17,6 +17,8 @@
 
 If you like to develop additional features or fix any bugs, feel free to submit a Pull Request.´
 
+Once you have started the application, you can login with the username `Admin` and `Password` as the password.
+
 ## Database Structure
 This project uses [SQLite](https://www.sqlite.org/index.html) and all data is stored in `PatientData.sqlite`.
 ![database structure](/images/db_structure.png)
