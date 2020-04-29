@@ -6,12 +6,16 @@
 - [Impressions](#impressions)
 
 ## How to use
-If you just like to run the patient management system, run the following command:
-```shell
-java -jar PatientManagementSystem.jar
-```
 
-If you like to develop additional features or fix any bugs, you can load the project into an IDE like Eclipse.
+| Command                         | Usage                                                                    |
+|---------------------------------|--------------------------------------------------------------------------|
+| `./gradlew run`                 | Run the Patient Management System.                                       |
+| `./gradlew jar`                 | Build a jar that includes all dependencies.                              |
+| `java -jar build/libs/pms.jar`  | Start the application from the created jar.                              |
+| `./gradlew test`                | Run unit tests.                                                          |
+| `./gradlew javadoc`             | Build Javadoc, which will be saved under `build/docs/javadoc/index.html`.|
+
+If you like to develop additional features or fix any bugs, feel free to submit a Pull Request.´
 
 ## Impressions
 
