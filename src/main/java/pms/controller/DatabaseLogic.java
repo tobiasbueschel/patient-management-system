@@ -1,5 +1,8 @@
 package pms.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pms.App;
 import pms.model.SQLiteConnector;
 
 import javax.imageio.ImageIO;
@@ -32,6 +35,7 @@ import java.util.Date;
  */
 public class DatabaseLogic {
 
+  private static final Logger LOGGER = LogManager.getLogger(App.class);
   private static int patientID;
   private File profilePhoto = null;
   private ArrayList<File> medicalImages = new ArrayList<File>();
@@ -54,7 +58,7 @@ public class DatabaseLogic {
     try {
       conn.setAutoCommit(false);
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -63,7 +67,7 @@ public class DatabaseLogic {
     try {
       this.conn.close();
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -95,7 +99,7 @@ public class DatabaseLogic {
           }
         }
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
   }
@@ -119,7 +123,7 @@ public class DatabaseLogic {
       InputStream is = new BufferedInputStream(new FileInputStream(profilePhoto));
       scaledImg = ImageIO.read(is);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     // source: http://stackoverflow.com/questions/17762404/resizing-image-to-fit-exactly-jlabel-of-300-by-300-px
@@ -145,7 +149,7 @@ public class DatabaseLogic {
         fis.close();
 
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
   }
@@ -172,9 +176,9 @@ public class DatabaseLogic {
       img = ImageIO.read(is);
       img = img.getScaledInstance(310, 200, Image.SCALE_SMOOTH);
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      LOGGER.error(e1.getMessage(), e1);
     } catch (IOException e1) {
-      e1.printStackTrace();
+      LOGGER.error(e1.getMessage(), e1);
     }
     return new ImageIcon(img);
   }
@@ -204,7 +208,7 @@ public class DatabaseLogic {
         }
 
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
   }
@@ -221,7 +225,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -237,7 +241,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -255,7 +259,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -271,7 +275,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
   }
@@ -288,7 +292,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -304,7 +308,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -320,7 +324,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -337,7 +341,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -353,7 +357,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -369,7 +373,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
   }
@@ -386,7 +390,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 
@@ -402,7 +406,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
   }
@@ -419,7 +423,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
   }
@@ -438,7 +442,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
   }
@@ -457,7 +461,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return firstName;
@@ -475,7 +479,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return lastName;
@@ -497,7 +501,7 @@ public class DatabaseLogic {
         rs.close();
 
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
 
@@ -516,7 +520,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return street;
@@ -534,7 +538,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return postCode;
@@ -552,7 +556,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return city;
@@ -571,7 +575,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return phoneNumber;
@@ -590,7 +594,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return emergencyNumber;
@@ -608,7 +612,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return gender;
@@ -626,7 +630,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return medicalCondition;
@@ -644,7 +648,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return billing;
@@ -662,7 +666,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return comment;
@@ -680,7 +684,7 @@ public class DatabaseLogic {
       rs.close();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
 
     return insurance;
@@ -714,17 +718,17 @@ public class DatabaseLogic {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     } finally {
       try {
         rs.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
       try {
         stmt.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
 
@@ -748,7 +752,7 @@ public class DatabaseLogic {
         rs.close();
 
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
 
@@ -781,17 +785,17 @@ public class DatabaseLogic {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     } finally {
       try {
         rs.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
       try {
         stmt.close();
       } catch (SQLException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
 
@@ -836,7 +840,7 @@ public class DatabaseLogic {
         }
 
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage(), e);
       }
     }
   }
@@ -852,7 +856,7 @@ public class DatabaseLogic {
 
       conn.commit();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     }
   }
 }

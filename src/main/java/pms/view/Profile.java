@@ -34,13 +34,20 @@ public class Profile extends JFrame {
    *
    */
   private static final long serialVersionUID = 1L;
-  private JPanel contentPane;
-  private JTextField tfFirstName, tfLastName, tfStreet, tfPostCode, tfCity, tfPhoneNumber, tfEmergency,
-    tfMedicalCondition;
+  private JTextField tfFirstName;
+  private JTextField tfLastName;
+  private JTextField tfStreet;
+  private JTextField tfPostCode;
+  private JTextField tfCity;
+  private JTextField tfPhoneNumber;
+  private JTextField tfEmergency;
+  private JTextField tfMedicalCondition;
   private JButton lblCamera;
-  private JLabel lblFullName, lblPatientPhoto, lblFirstname;
-  private JDateChooser dateDOB, dateAppointment;
-  private JComboBox<String> cbGender, cbBilling, cbInsurance;
+  private JLabel lblFullName;
+  private JLabel lblPatientPhoto;
+  private JComboBox<String> cbGender;
+  private JComboBox<String> cbBilling;
+  private JComboBox<String> cbInsurance;
   private JTextArea taComments = null;
   private JList<ImageLoader> list = null;
   private DefaultListModel<ImageLoader> listModel = null;
@@ -68,7 +75,7 @@ public class Profile extends JFrame {
   public Profile() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 1000, 600);
-    contentPane = new JPanel();
+    JPanel contentPane = new JPanel();
     contentPane.setBorder(null);
     setResizable(false);
     contentPane.setLayout(null);
@@ -147,7 +154,7 @@ public class Profile extends JFrame {
     mainPanel.add(lblPatientPhoto);
 
     /** first name label & textfield */
-    lblFirstname = new JLabel("Firstname:");
+    JLabel lblFirstname = new JLabel("Firstname:");
     lblFirstname.setBounds(37, 230, 75, 30);
     mainPanel.add(lblFirstname);
 
@@ -306,7 +313,7 @@ public class Profile extends JFrame {
      *   JDateChooser is an external jar obtained through the link below
      *   http://toedter.com/jcalendar/
      */
-    dateDOB = new JDateChooser();
+    JDateChooser dateDOB = new JDateChooser();
 
     /**
      * 	Implementation is attributed to
@@ -342,7 +349,7 @@ public class Profile extends JFrame {
 
     mainPanel.add(dateDOB);
 
-    dateAppointment = new JDateChooser();
+    JDateChooser dateAppointment = new JDateChooser();
     dateAppointment.setBounds(385, 68, 220, 28);
     dateAppointment.setBackground(CustomColors.grey);
     dateAppointment.setBorder(BorderFactory.createEmptyBorder());
