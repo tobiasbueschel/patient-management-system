@@ -1,5 +1,8 @@
 package pms.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pms.App;
 import pms.model.SQLiteConnector;
 
 import javax.swing.*;
@@ -21,9 +24,7 @@ import java.sql.SQLException;
 
 public class Login extends JFrame {
 
-  /**
-   *
-   */
+  private static final Logger LOGGER = LogManager.getLogger(App.class);
   private static final long serialVersionUID = 1L;
   private JPanel contentPane;
   private JTextField textFieldUN;
@@ -170,8 +171,7 @@ public class Login extends JFrame {
           try {
             connection.close();
           } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            LOGGER.error(e1.getMessage(), e1);
           }
         }
 

@@ -1,5 +1,8 @@
 package pms.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pms.App;
 import pms.controller.DatabaseLogic;
 import pms.model.SQLiteConnector;
 
@@ -30,9 +33,7 @@ import java.util.Date;
  */
 public class Home extends JFrame {
 
-  /**
-   *
-   */
+  private static final Logger LOGGER = LogManager.getLogger(App.class);
   private static final long serialVersionUID = 1L;
   Connection connection = null;
   private JPanel contentPane;
@@ -243,7 +244,7 @@ public class Home extends JFrame {
 
                 } catch (SQLException e1) {
                   System.err.println("No connection with SQLite possible.");
-                  e1.printStackTrace();
+                  LOGGER.error(e1.getMessage(), e1);
                 }
               }
             }
@@ -370,13 +371,13 @@ public class Home extends JFrame {
       pst.close();
     } catch (SQLException e) {
       System.err.println("No connection with SQLite possible.");
-      e.printStackTrace();
+      LOGGER.error(e.getMessage(), e);
     } finally {
       if (connection != null) {
         try {
           connection.close();
         } catch (SQLException e1) {
-          e1.printStackTrace();
+          LOGGER.error(e1.getMessage(), e1);
         }
       }
     }
