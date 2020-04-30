@@ -54,7 +54,6 @@ public class Home extends JFrame {
 
     // ==================================== HEADER MENU
     // =============================================
-    /** MENU: Panel */
     JPanel menuPanel = new JPanel();
     menuPanel.setBounds(0, 0, 1000, 50);
     menuPanel.setLayout(null);
@@ -70,7 +69,7 @@ public class Home extends JFrame {
     lblToday.setVisible(true);
     menuPanel.add(lblToday);
 
-    /** MENU: title */
+    // MENU: title
     JLabel lblTitle = new JLabel("PMS");
     lblTitle.setForeground(CustomColors.white);
     lblTitle.setBackground(CustomColors.green);
@@ -80,14 +79,14 @@ public class Home extends JFrame {
     lblTitle.setOpaque(true);
     menuPanel.add(lblTitle);
 
-    /** MENU: search field */
+    // MENU: search field
     txtSearch = new JTextField();
     txtSearch.setText("Search...");
     txtSearch.setBounds(370, 12, 176, 28);
     txtSearch.setColumns(10);
     menuPanel.add(txtSearch);
 
-    /** MENU: button - new patient */
+    // MENU: button - new patient
     JButton btnNewPatient = new JButton();
     btnNewPatient.addMouseListener(new MouseAdapter() {
       @Override
@@ -115,7 +114,7 @@ public class Home extends JFrame {
     btnNewPatient.setBorderPainted(false);
     menuPanel.add(btnNewPatient);
 
-    /** MENU: button - select all */
+    // MENU: button - select all
     JButton btnSelect = new JButton();
     btnSelect.addMouseListener(new MouseAdapter() {
       @Override
@@ -145,7 +144,7 @@ public class Home extends JFrame {
     btnSelect.setBorderPainted(false);
     menuPanel.add(btnSelect);
 
-    /** MENU: button - import */
+    // MENU: button - import
     JButton btnImport = new JButton();
     btnImport.addMouseListener(new MouseAdapter() {
       @Override
@@ -173,7 +172,7 @@ public class Home extends JFrame {
     btnImport.setBorderPainted(false);
     menuPanel.add(btnImport);
 
-    /** MENU: button - export */
+    // MENU: button - export
     JButton btnExport = new JButton();
     btnExport.addMouseListener(new MouseAdapter() {
       @Override
@@ -200,7 +199,7 @@ public class Home extends JFrame {
     btnExport.setBorderPainted(false);
     menuPanel.add(btnExport);
 
-    /** MENU: button - delete */
+    // MENU: button - delete
     JButton btnDelete = new JButton();
     btnDelete.addMouseListener(new MouseAdapter() {
       @Override
@@ -263,7 +262,7 @@ public class Home extends JFrame {
     btnDelete.setBorderPainted(false);
     menuPanel.add(btnDelete);
 
-    /** MENU: button - logout */
+    // MENU: button - logout
     JButton btnLogout = new JButton();
     btnLogout.addMouseListener(new MouseAdapter() {
       @Override
@@ -303,7 +302,7 @@ public class Home extends JFrame {
 
     // ============================================ JTABLE
     // =================================================
-    /** creates the table pms.pms.model that stores the JTable columns & data */
+    // creates the table pms.pms.model that stores the JTable columns & data
     TableModel jTable1Model = new DefaultTableModel(new String[][]{}, new String[]{"Patient ID", "First Name",
       "Last Name", "Medical Condition", "Next Appointment", "Phone Number", "Billing", "Comment"});
 
@@ -339,7 +338,7 @@ public class Home extends JFrame {
     table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     mainPanel.add(table);
 
-    /** creates JScrollPane */
+    // creates JScrollPane
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.setBounds(37, 20, 926, 477);
     scrollPane.setViewportView(table);
@@ -382,7 +381,7 @@ public class Home extends JFrame {
       }
     }
 
-    /** adds a responsive RowFilter to the JTable */
+    // adds a responsive RowFilter to the JTable
     txtSearch.addKeyListener(new KeyAdapter() {
       @Override
       public void keyReleased(KeyEvent e) {
