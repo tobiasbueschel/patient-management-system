@@ -30,6 +30,7 @@ public class Login extends JFrame {
   private JTextField textFieldUN;
   private JPasswordField passwordField;
   private JButton btnLogin;
+  private String name = "Lucida Grande";
 
   /**
    * Create the frame.
@@ -52,7 +53,7 @@ public class Login extends JFrame {
 
     /** LOGIN FORM: header: title */
     JLabel llbWelcome = new JLabel("WELCOME");
-    llbWelcome.setFont(new Font("Lucida Grande", Font.PLAIN, 45));
+    llbWelcome.setFont(new Font(name, Font.PLAIN, 45));
     llbWelcome.setForeground(CustomColors.green);
     llbWelcome.setHorizontalAlignment(JLabel.CENTER);
     llbWelcome.setBounds(345, 180, 310, 61);
@@ -68,7 +69,7 @@ public class Login extends JFrame {
     /* ================================ Form Body ================================ */
     /** LOGIN FORM: body: username */
     textFieldUN = new JTextField("Username");
-    textFieldUN.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+    textFieldUN.setFont(new Font(name, Font.PLAIN, 16));
     textFieldUN.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -97,7 +98,7 @@ public class Login extends JFrame {
 
     /** LOGIN FORM: body: password */
     passwordField = new JPasswordField("Password");
-    passwordField.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+    passwordField.setFont(new Font(name, Font.PLAIN, 16));
     passwordField.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -129,10 +130,10 @@ public class Login extends JFrame {
     btnLogin.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Connection connection = SQLiteConnector.dbConnector();
+        String query = "select * from user where username=? and password=?";
 
-        try {
-          String query = "select * from user where username=? and password=?";
-          PreparedStatement pst = connection.prepareStatement(query);
+        try (PreparedStatement pst = connection.prepareStatement(query);) {
+
           pst.setString(1, textFieldUN.getText());
           pst.setString(2, String.valueOf(passwordField.getPassword()));
 
@@ -179,7 +180,7 @@ public class Login extends JFrame {
     });
     btnLogin.setBounds(345, 429, 310, 40);
     btnLogin.setForeground(CustomColors.white);
-    btnLogin.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+    btnLogin.setFont(new Font(name, Font.BOLD, 16));
     btnLogin.setBackground(CustomColors.green);
     btnLogin.setBorderPainted(false);
     btnLogin.setOpaque(true);

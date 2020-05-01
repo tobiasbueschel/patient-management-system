@@ -222,8 +222,7 @@ public class Home extends JFrame {
           "Delete Patient", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
 
-          if (table.getRowCount() > 0) {
-            if (table.getSelectedRowCount() > 0) {
+          if (table.getRowCount() > 0 && table.getSelectedRowCount() > 0) {
               int selectedRow[] = table.getSelectedRows();
               for (int i : selectedRow) {
                 try {
@@ -247,7 +246,6 @@ public class Home extends JFrame {
                   LOGGER.error(e1.getMessage(), e1);
                 }
               }
-            }
           }
         } else {
           JOptionPane.getRootFrame()
@@ -315,6 +313,8 @@ public class Home extends JFrame {
      * @link http://stackoverflow.com/questions/14852719/double-click-listener-on-jtable-in-java
      */
     table.addMouseListener(new MouseAdapter() {
+
+      @Override
       public void mousePressed(MouseEvent me) {
         JTable table = (JTable) me.getSource();
         Point p = me.getPoint();
@@ -332,7 +332,7 @@ public class Home extends JFrame {
 
     table.setModel(jTable1Model);
 
-    final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable1Model);
+    final TableRowSorter<TableModel> sorter = new TableRowSorter<>(jTable1Model);
     table.setRowSorter(sorter);
 
     table.setBounds(37, 20, 926, 477);
@@ -370,7 +370,7 @@ public class Home extends JFrame {
       rs.close();
       pst.close();
     } catch (SQLException e) {
-      System.err.println("No connection with SQLite possible.");
+      LOGGER.error("No connection with SQLite possible.");
       LOGGER.error(e.getMessage(), e);
     } finally {
       if (connection != null) {
@@ -387,7 +387,7 @@ public class Home extends JFrame {
       @Override
       public void keyReleased(KeyEvent e) {
 
-        if (txtSearch.getText() == "") {
+        if (txtSearch.getText().equals("")) {
           sorter.setRowFilter(null);
         } else {
           sorter.setRowFilter(RowFilter.regexFilter(txtSearch.getText()));
@@ -397,6 +397,8 @@ public class Home extends JFrame {
 
     });
     txtSearch.addMouseListener(new MouseAdapter() {
+
+      @Override
       public void mouseClicked(MouseEvent evt) {
         txtSearch.selectAll();
       }

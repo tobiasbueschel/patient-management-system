@@ -80,10 +80,9 @@ public class DatabaseLogic {
   public void insertPatientID() {
 
     if (DatabaseLogic.patientID == 0) {
-      try {
-        String sql = "insert into PatientInfo default values";
-        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      String sql = "insert into PatientInfo default values";
 
+      try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
         int aRows = stmt.executeUpdate();
         conn.commit();
 
@@ -136,10 +135,9 @@ public class DatabaseLogic {
   public void insertProfilePhoto() {
 
     if (profilePhoto != null) {
-      try {
-        String sql = "update PatientInfo SET profilePhoto=? where patientID=?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+      String sql = "update PatientInfo SET profilePhoto=? where patientID=?";
 
+      try (PreparedStatement stmt = conn.prepareStatement(sql);) {
         FileInputStream fis = new FileInputStream(profilePhoto);
         stmt.setBinaryStream(1, fis, (int) profilePhoto.length());
         stmt.setInt(2, DatabaseLogic.patientID);
@@ -175,10 +173,8 @@ public class DatabaseLogic {
       is = new BufferedInputStream(new FileInputStream(file));
       img = ImageIO.read(is);
       img = img.getScaledInstance(310, 200, Image.SCALE_SMOOTH);
-    } catch (FileNotFoundException e1) {
-      LOGGER.error(e1.getMessage(), e1);
-    } catch (IOException e1) {
-      LOGGER.error(e1.getMessage(), e1);
+    } catch (IOException e) {
+      LOGGER.error(e.getMessage(), e);
     }
     return new ImageIcon(img);
   }
@@ -192,7 +188,6 @@ public class DatabaseLogic {
 
       try {
         for (int i = 0; i < medicalImages.size(); i++) {
-
           file = medicalImages.get(i);
           fis = new FileInputStream(file);
           String sql = "insert into PatientImages (patientID, patientImage) values(?,?)";
@@ -214,11 +209,9 @@ public class DatabaseLogic {
   }
 
   public void insertFirstName(String firstName) {
+    String sql = "update PatientInfo SET firstName=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET firstName=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, firstName);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -230,11 +223,9 @@ public class DatabaseLogic {
   }
 
   public void insertLastName(String lastName) {
+    String sql = "update PatientInfo SET lastName=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET lastName=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, lastName);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -246,13 +237,10 @@ public class DatabaseLogic {
   }
 
   public void insertDOB(Date date) {
-
     String dateString = new SimpleDateFormat("MMM d, yy").format(date);
+    String sql = "update PatientInfo SET dob=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET dob=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, dateString);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -264,11 +252,9 @@ public class DatabaseLogic {
   }
 
   public void insertStreet(String street) {
+    String sql = "update PatientInfo SET street=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET street=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, street);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -281,11 +267,9 @@ public class DatabaseLogic {
   }
 
   public void insertPostCode(String postCode) {
+    String sql = "update PatientInfo SET postCode=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET postCode=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, postCode);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -297,11 +281,9 @@ public class DatabaseLogic {
   }
 
   public void insertCity(String city) {
+    String sql = "update PatientInfo SET city=? where patientID=?";
 
-    try {
-      String sql = "update PatientInfo SET city=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);) {
       stmt.setString(1, city);
       stmt.setInt(2, DatabaseLogic.patientID);
       stmt.execute();
@@ -313,10 +295,9 @@ public class DatabaseLogic {
   }
 
   public void insertPhoneNumber(String phoneNumber) {
+    String sql = "update PatientInfo SET phoneNumber=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET phoneNumber=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, phoneNumber);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -330,10 +311,9 @@ public class DatabaseLogic {
 
 
   public void insertEmergency(String emergencyNumber) {
+    String sql = "update PatientInfo SET emergencyNumber=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET emergencyNumber=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, emergencyNumber);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -346,10 +326,9 @@ public class DatabaseLogic {
   }
 
   public void insertGender(String gender) {
+    String sql = "update PatientInfo SET gender=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET gender=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, gender);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -362,10 +341,9 @@ public class DatabaseLogic {
   }
 
   public void insertMedicalCondition(String medicalCondition) {
+    String sql = "update PatientInfo SET medicalCondition=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET medicalCondition=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, medicalCondition);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -379,10 +357,9 @@ public class DatabaseLogic {
   }
 
   public void insertBilling(String billing) {
+    String sql = "update PatientInfo SET billing=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET billing=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, billing);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -395,10 +372,9 @@ public class DatabaseLogic {
   }
 
   public void insertComment(String comment) {
+    String sql = "update PatientInfo SET comment=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET comment=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, comment);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -412,10 +388,9 @@ public class DatabaseLogic {
   }
 
   public void insertInsurance(String insurance) {
+    String sql = "update PatientInfo SET insurance=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET insurance=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, insurance);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -431,10 +406,9 @@ public class DatabaseLogic {
   public void insertNextAppointment(Date date) {
 
     String dateString = new SimpleDateFormat("MMMMM d, yyyy").format(date);
+    String sql = "update PatientInfo SET nextAppointment=? where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "update PatientInfo SET nextAppointment=? where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setString(1, dateString);
       stmt.setInt(2, DatabaseLogic.patientID);
@@ -451,10 +425,9 @@ public class DatabaseLogic {
 
   public String getFirstName(int patientID) {
     String firstName = null;
+    String sql = "select firstName from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select firstName from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       firstName = rs.getString(1);
@@ -469,10 +442,9 @@ public class DatabaseLogic {
 
   public String getLastName(int patientID) {
     String lastName = null;
+    String sql = "select lastName from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select lastName from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       lastName = rs.getString(1);
@@ -488,10 +460,10 @@ public class DatabaseLogic {
   public Date getDOB(int patientID, Date date) {
     Date dateDOB = null;
 
-    if (date != null) {
-      try {
-        String sql = "select dob from PatientInfo where patientID=?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+    if (date != null){
+      String sql = "select dob from PatientInfo where patientID=?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
         stmt.setInt(1, patientID);
         ResultSet rs = stmt.executeQuery();
 
@@ -510,10 +482,9 @@ public class DatabaseLogic {
 
   public String getStreet(int patientID) {
     String street = null;
+    String sql = "select street from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select street from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       street = rs.getString(1);
@@ -528,10 +499,9 @@ public class DatabaseLogic {
 
   public String getPostCode(int patientID) {
     String postCode = null;
+    String sql = "select postCode from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select postCode from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       postCode = rs.getString(1);
@@ -546,10 +516,9 @@ public class DatabaseLogic {
 
   public String getCity(int patientID) {
     String city = null;
+    String sql = "select city from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select city from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       city = rs.getString(1);
@@ -565,10 +534,9 @@ public class DatabaseLogic {
 
   public String getPhoneNumber(int patientID) {
     String phoneNumber = null;
+    String sql = "select phoneNumber from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select phoneNumber from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       phoneNumber = rs.getString(1);
@@ -584,10 +552,9 @@ public class DatabaseLogic {
 
   public String getEmergencyNumber(int patientID) {
     String emergencyNumber = null;
+    String sql = "select emergencyNumber from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select emergencyNumber from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       emergencyNumber = rs.getString(1);
@@ -602,10 +569,9 @@ public class DatabaseLogic {
 
   public String getGender(int patientID) {
     String gender = null;
+    String sql = "select gender from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select gender from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       gender = rs.getString(1);
@@ -620,10 +586,9 @@ public class DatabaseLogic {
 
   public String getMedicalCondition(int patientID) {
     String medicalCondition = null;
+    String sql = "select medicalCondition from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select medicalCondition from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       medicalCondition = rs.getString(1);
@@ -638,10 +603,9 @@ public class DatabaseLogic {
 
   public String getBilling(int patientID) {
     String billing = null;
+    String sql = "select billing from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select billing from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       billing = rs.getString(1);
@@ -656,10 +620,9 @@ public class DatabaseLogic {
 
   public String getComment(int patientID) {
     String comment = null;
+    String sql = "select comment from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select comment from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       comment = rs.getString(1);
@@ -674,10 +637,9 @@ public class DatabaseLogic {
 
   public String getInsurance(int patientID) {
     String insurance = null;
+    String sql = "select insurance from PatientInfo where patientID=?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try {
-      String sql = "select insurance from PatientInfo where patientID=?";
-      PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       ResultSet rs = stmt.executeQuery();
       insurance = rs.getString(1);
@@ -695,9 +657,8 @@ public class DatabaseLogic {
     Image img = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
-
+    String sql = "select * from PatientInfo where patientID=?";
     try {
-      String sql = "select * from PatientInfo where patientID=?";
       stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);
       rs = stmt.executeQuery();
@@ -717,9 +678,9 @@ public class DatabaseLogic {
         }
       }
 
-    } catch (Exception e) {
+    } catch(Exception e){
       LOGGER.error(e.getMessage(), e);
-    } finally {
+    } finally{
       try {
         rs.close();
       } catch (SQLException e) {
@@ -738,11 +699,10 @@ public class DatabaseLogic {
   public Date getNextAppointment(int patientID, Date date) {
 
     Date dateParsed = null;
-
     if (date != null) {
-      try {
-        String sql = "select nextAppointment from PatientInfo where patientID=?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
+      String sql = "select nextAppointment from PatientInfo where patientID=?";
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
         stmt.setInt(1, patientID);
         ResultSet rs = stmt.executeQuery();
 
@@ -768,7 +728,6 @@ public class DatabaseLogic {
     ResultSet rs = null;
 
     try {
-
       String sql = "select patientImage from PatientImages where patientID=?";
       stmt = conn.prepareStatement(sql);
       stmt.setInt(1, patientID);

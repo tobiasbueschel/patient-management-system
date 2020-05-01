@@ -160,6 +160,8 @@ public class Profile extends JFrame {
 
     tfFirstName = new JTextField();
     tfFirstName.addKeyListener(new KeyAdapter() {
+
+      @Override
       public void keyReleased(KeyEvent e) {
         lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
       }
@@ -176,6 +178,8 @@ public class Profile extends JFrame {
     tfLastName = new JTextField();
     tfLastName.setBounds(107, 260, 135, 30);
     tfLastName.addKeyListener(new KeyAdapter() {
+
+      @Override
       public void keyReleased(KeyEvent e) {
         lblFullName.setText(tfFirstName.getText() + " " + tfLastName.getText());
       }
@@ -273,11 +277,13 @@ public class Profile extends JFrame {
     tfPhoneNumber.setBounds(107, 410, 135, 30);
     mainPanel.add(tfPhoneNumber);
 
-    listModel = new DefaultListModel<ImageLoader>();
+    listModel = new DefaultListModel<>();
 
     /** allows to pms.pms.view images in higher resolutions */
-    list = new JList<ImageLoader>(listModel);
+    list = new JList<>(listModel);
     list.addMouseListener(new MouseAdapter() {
+
+      @Override
       public void mouseClicked(MouseEvent evt) {
         evt.getSource();
         if (evt.getClickCount() == 2 && saved == true) {
@@ -363,7 +369,7 @@ public class Profile extends JFrame {
     }
     mainPanel.add(dateAppointment);
 
-    cbInsurance = new JComboBox<String>();
+    cbInsurance = new JComboBox<>();
     cbInsurance.setBounds(692, 69, 270, 27);
     for (int count = 0; count < insurances.length; count++) {
       cbInsurance.addItem(insurances[count]);
@@ -437,7 +443,7 @@ public class Profile extends JFrame {
             Desktop.getDesktop()
               .browse(
                 new URI("http://www.google.com/search?q=" + tfMedicalCondition.getText()
-                  .replaceAll(" ", "+")));
+                  .replace(" ", "+")));
           } catch (IOException | URISyntaxException e1) {
             e1.printStackTrace();
           }
@@ -456,7 +462,7 @@ public class Profile extends JFrame {
             Desktop.getDesktop()
               .browse(
                 new URI("https://en.wikipedia.org/w/index.php?search=" + tfMedicalCondition.getText()
-                  .replaceAll(" ", "+")));
+                  .replace(" ", "+")));
           } catch (IOException | URISyntaxException e1) {
             e1.printStackTrace();
           }
@@ -479,7 +485,7 @@ public class Profile extends JFrame {
     mainPanel.add(label);
 
     /** switches the profile default photo based on which gender is chosen */
-    cbGender = new JComboBox<String>();
+    cbGender = new JComboBox<>();
     cbGender.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String iconPath = null;
@@ -510,7 +516,7 @@ public class Profile extends JFrame {
       .toString(), Font.BOLD, 12));
     mainPanel.add(lblBilling);
 
-    cbBilling = new JComboBox<String>();
+    cbBilling = new JComboBox<>();
     cbBilling.setBounds(792, 20, 170, 30);
     cbBilling.addItem("Paid");
     cbBilling.addItem("Pending");
@@ -603,7 +609,7 @@ public class Profile extends JFrame {
     lblPatientPhoto.setIcon(dl.getProfilePhoto(patientID));
     ArrayList<Image> arImg = dl.getMedicalImages(patientID);
 
-    if (arImg.size() != 0) {
+    if (!arImg.isEmpty()) {
       for (int i = 0; i < arImg.size(); i++) {
         this.listModel.addElement(new ImageLoader("", new ImageIcon(arImg.get(i)
           .getScaledInstance(310, 200, Image.SCALE_SMOOTH))));
